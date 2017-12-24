@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Šķirnes dati</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-list>
+
+  <ion-item>
+    <ion-label floating>Nosaukums</ion-label>
+    <ion-input type="text" [(ngModel)]="Nosaukums"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Bot. nos.</ion-label>
+    <ion-input type="text" [(ngModel)]="BotNosaukums"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Potcelms</ion-label>
+    <ion-input type="text" [(ngModel)]="Potcelms"></ion-input>
+  </ion-item>
+
+</ion-list>
+  <ion-buttons >
+      <button ion-button *ngFor="let x of potcelms_suggestions" (click)="set_potcelms(x)">{{x}}</button>
+    </ion-buttons>
+
+
+
+
+<button ion-button  full (click)="saglabaatSkirnesDatus()">Saglabāt</button>
+  </ion-card>
+</ion-content>

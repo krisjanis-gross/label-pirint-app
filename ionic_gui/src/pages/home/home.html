@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Augu pases 2.0 {{backendData.ServerURL}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+  <ion-card-content>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col col-10 col-sm-8 col-md-8 col-lg-8 col-xl-6>
+          <h1 (click)="change_sort($event)">{{this.backendData.mainTitle}}</h1>
+          <h2 (click)="change_sort($event)">{{this.backendData.mainBot_nosaukums}} {{this.backendData.mainPotcelms}}</h2>
+        </ion-col>
+        <ion-col col-2 col-sm-4 col-md-4 col-lg-4 col-xl-6>
+          <button (click)="change_sort($event)" ion-button full icon-left ><ion-icon name='create'></ion-icon>Labot</button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-sm-4>
+          <ion-item>
+            <ion-label floating>Kategorija</ion-label>
+            <ion-input type="text" [(ngModel)]="this.backendData.mainKategorija"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-sm-4>
+            <ion-item>
+              <ion-label floating>Šķira</ion-label>
+              <ion-input type="text" [(ngModel)]="this.backendData.mainSkira"></ion-input>
+            </ion-item>
+        </ion-col>
+        <ion-col col-sm-4>
+            <ion-item>
+              <ion-label floating>Daudzums</ion-label>
+              <ion-input type="text" [(ngModel)]="this.backendData.mainDaudzums"></ion-input>
+            </ion-item>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12 col-sm-4 col-md-3>
+          <ion-item>
+            <ion-label floating>Zīmīšu skaits</ion-label>
+            <ion-input type="text" [(ngModel)]="this.backendData.mainSkaits"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-12 col-sm-8 col-md-9 >
+          <ion-buttons >
+              <button ion-button *ngFor="let x of this.backendData.mainSkaitsFavoriiti" (click)="set_skaits(x)">{{x}}</button>
+            </ion-buttons>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+    <button ion-button full icon-left (click)="doPrint()"><ion-icon name='print' >Drukāt</ion-icon></button>
+  </ion-card-content>
+  </ion-card>
+
+<h3>Drukāšanas rinda</h3>
+<ion-item-group>
+  <ion-item-divider color="light">Šodien</ion-item-divider>
+
+  <ion-item *ngFor="let item of this.backendData.queueToday" >
+    {{item.title}} ({{item.count}})
+    <ion-note item-right color="{{item.color}}" >{{item.status}}</ion-note>
+  </ion-item>
+
+</ion-item-group>
+
+<ion-item-group>
+  <ion-item-divider color="light">Agrāk</ion-item-divider>
+  <ion-item *ngFor="let item of this.backendData.queueOld" >
+    {{item.title}} ({{item.count}})
+    <ion-note item-right color="{{item.color}}" >{{item.status}}</ion-note>
+  </ion-item>
+
+</ion-item-group>
+
+
+
+
+</ion-content>

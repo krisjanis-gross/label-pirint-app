@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <button ion-button  icon-left  (click)="new_product($event)">
+        <ion-icon name="add"></ion-icon>
+            Pievienot jaunu
+        </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchItems($event)"></ion-searchbar>
+  <ion-item-group>
+    <ion-item-divider color="light">Favorīti</ion-item-divider>
+
+    <ion-item *ngFor="let item of itemsFavourites" >
+      <h1 (click)="itemTapped($event, item)">{{item.title}}</h1>
+      <h2 (click)="itemTapped($event, item)">{{item.bot_nosaukums}}{{item.potcelms}}</h2>
+        <div class="buttons" item-right>
+            <button ion-button  (click)="edit_product($event, item)">Rediģēt</button>
+        </div>
+    </ion-item>
+ </ion-item-group>
+
+ <ion-item-group>
+   <ion-item-divider color="light">Visi</ion-item-divider>
+   <ion-item *ngFor="let item of items" >
+     <h1 (click)="itemTapped($event, item)">{{item.title}}</h1>
+     <h2 (click)="itemTapped($event, item)">{{item.bot_nosaukums}}{{item.potcelms}}</h2>
+       <div class="buttons" item-right>
+           <button ion-button  (click)="edit_product($event, item)">Rediģēt</button>
+       </div>
+   </ion-item>
+
+ </ion-item-group>
+
+
+
+</ion-content>
