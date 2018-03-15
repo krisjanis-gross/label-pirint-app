@@ -1,6 +1,6 @@
 <?php
 
-// db connection_aborted
+// db connection
 $db_file = "print_app.db";
 
     //http://stackoverflow.com/questions/15485354/angular-http-post-to-php-and-undefined
@@ -194,7 +194,7 @@ if ($request_type == 'get_sort_list_favourites') {
 
 
 if ($request_type == 'get_print_list_today') {
-  $tmp_status_list = array("Gaida","Drukā","Gatavs");
+  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 0 1 2 3
   $tmp_color_list = array("dark","primary","");
 
   $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
@@ -215,7 +215,7 @@ if ($request_type == 'get_print_list_today') {
 }
 
 if ($request_type == 'get_print_list_history') {
-  $tmp_status_list = array("Gaida","Drukā","Gatavs");
+  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 1 2 3 4
   $tmp_color_list = array("dark","primary","");
 
   $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
