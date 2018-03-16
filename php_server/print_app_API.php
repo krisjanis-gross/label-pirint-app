@@ -206,6 +206,7 @@ if ($request_type == 'get_print_list_today') {
         "id" => $row['id'],
         "title" => $row['title'],
         "count" => $row['label_count'],
+        "printed_count" => $row['printed_count'],
         "status" => $tmp_status_list[$row['status']],
         "color" => $tmp_color_list[$row['status']]
         ];
@@ -227,6 +228,7 @@ if ($request_type == 'get_print_list_history') {
         "id" => $row['id'],
         "title" => $row['title'],
         "count" => $row['label_count'],
+        "printed_count" => $row['printed_count'],
         "status" => $tmp_status_list[$row['status']],
         "color" => $tmp_color_list[$row['status']]
         ];
@@ -290,7 +292,7 @@ $print_object = json_encode($print_object);
 $db = new SQLite3($db_file);
   // update main form data to reflect the last print_app_API
 $date_now = date('Y-m-d H:i:s');
-  $results = $db->query("INSERT INTO `PrintQueue`(`id`,`title`,`status`,`datetime`,`print_object_json`,`label_count`,`sync_status`) VALUES (NULL,'$Title',0,'$date_now','$print_object',$Skaits,0) ;");
+  $results = $db->query("INSERT INTO `PrintQueue`(`id`,`title`,`status`,`datetime`,`print_object_json`,`label_count`,`sync_status`,`printed_count`) VALUES (NULL,'$Title',0,'$date_now','$print_object',$Skaits,0,0) ;");
 
 // update skaits favourites
 $count_suggestion_array = array();
