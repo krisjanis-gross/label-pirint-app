@@ -30,8 +30,8 @@ export class BackendData {
   public mainSkaits= "";
   public mainSkaitsFavoriiti= "";
 
-  public queueToday: Array<{id: string; title: string,count:string, satus: string, color:string}>;
-  public queueOld: Array<{id: string; title: string,count:string, satus: string, color:string}>;
+  public queueToday: Array<{id: string; title: string,count:string, printed_count:string, satus: string, color:string}>;
+  public queueOld: Array<{id: string; title: string,count:string, printed_count:string, satus: string, color:string}>;
 
  private _options = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 

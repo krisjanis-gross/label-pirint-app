@@ -72,7 +72,7 @@
   <ion-item-divider color="light">Šodien</ion-item-divider>
 
   <ion-item *ngFor="let item of this.backendData.queueToday" >
-    {{item.title}} ({{item.count}})
+    {{item.title}} ( {{item.printed_count}}/{{item.count}})
     <ion-note item-right color="{{item.color}}" >{{item.status}}</ion-note>
   </ion-item>
 
@@ -81,7 +81,7 @@
 <ion-item-group>
   <ion-item-divider color="light">Agrāk</ion-item-divider>
   <ion-item *ngFor="let item of this.backendData.queueOld" >
-    {{item.title}} ({{item.count}})
+    {{item.title}} ({{item.printed_count}}/{{item.count}})
     <ion-note item-right color="{{item.color}}" >{{item.status}}</ion-note>
   </ion-item>
 

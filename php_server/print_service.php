@@ -1,4 +1,4 @@
-<?
+<?php
 // Print service
 
 // Read print queue.
@@ -16,12 +16,11 @@
 $db_file = "print_app.db";
 
 // loop forever
-
-while (1)
-  {
+$loop_counter = 10;
+while ($loop_counter > 0)   {
       // read print queue
       $print_job  = get_current_print_job ();
-
+      var_dump($print_job);
       if ($print_job)
         {
           print_label ($print_job);
@@ -29,16 +28,20 @@ while (1)
         }
       else
         {
+          print "<br> nothing to print right now.";
           sleep(3);
+
         }
 
 
       // pause some time
       sleep(0.1);
+      $loop_counter--;
   }
 
 
 function get_current_print_job (){
+  global $db_file;
   $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
   // select record from print queue wit status 0 or 1 (new or printing) with the least id (oldest)
   $results = $db->query("select * from PrintQueue where status < 2  ORDER BY id ASC LIMIT 1;");
@@ -49,8 +52,7 @@ function get_current_print_job (){
       "title" => $row['title'],
       "count" => $row['label_count'],
       "printed_count" => $row['printed_count'],
-      "status" => $tmp_status_list[$row['status']],
-      "color" => $tmp_color_list[$row['status']]
+      "print_object_json" => $row['print_object_json']
       ];
     }
   else $print_job = NULL;
@@ -59,12 +61,20 @@ function get_current_print_job (){
 }
 
 function update_print_job_status($print_job) {
+  global $db_file;
   $db = new SQLite3($db_file);
-  $job_id = $print_job["id"]
-  $status = 2; // printing
-  $new_printed_count = $print_job["printed_count"] +1;
+  $job_id = $print_job["id"];
 
-  $results = $db->query("update set printed_count = $new_printed_count , status = $status  PrintQueue where id = $job_id;");
+  $new_printed_count = $print_job["printed_count"] +1;
+  if ($new_printed_count >= $print_job["count"])
+      $status = 2; // done
+  else $status = 1; // printing
+
+
+  $update_query = "update PrintQueue set printed_count = $new_printed_count , status = $status where id = $job_id;";
+  print "<br> <br> <br> ";
+  var_dump (  $update_query);
+  $results = $db->query($update_query);
 
 }
 
@@ -72,7 +82,10 @@ function update_print_job_status($print_job) {
 
 function print_label ($print_job) {
    // TODO:
+   print "<br> printing teh label ";
+   var_dump($print_job["print_object_json"]);
    sleep(3);
+
 }
 
 ?>
