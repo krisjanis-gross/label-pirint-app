@@ -59,7 +59,7 @@ function get_current_print_job (){
 }
 
 function update_print_job_status($print_job) {
-  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+  $db = new SQLite3($db_file);
   $job_id = $print_job["id"]
   $status = 2; // printing
   $new_printed_count = $print_job["printed_count"] +1;
