@@ -242,8 +242,8 @@ if ($request_type == 'get_print_list_history') {
 
 if ($request_type == 'print_label') {
   $request_data = $request->request_data;
-/*var_dump ($request);
-  var_dump ($request_data);*/
+var_dump ($request);
+  var_dump ($request_data);
   $id = $request_data->id;
   $Title = $request_data->Title;
   $Skaits = $request_data->Skaits;
@@ -287,7 +287,7 @@ $print_object = [
   "line4" => $line4,
 ];
 
-$print_object = json_encode($print_object);
+$print_object = json_encode($print_object, JSON_UNESCAPED_UNICODE);
 // save in queue
 $db = new SQLite3($db_file);
   // update main form data to reflect the last print_app_API
@@ -300,7 +300,7 @@ $results = $db->query("select distinct (label_count), count(label_count) as c fr
 while ($row = $results->fetchArray()) {
     $count_suggestion_array [] =   $row['label_count'];
   }
-$count_suggestion_array = json_encode ($count_suggestion_array);
+$count_suggestion_array = json_encode ($count_suggestion_array, JSON_UNESCAPED_UNICODE);
 
 // update print count for  favourites
   $results = $db->query("update products set printCount = printCount  + 1 where id = $id");
@@ -350,5 +350,5 @@ $db->close();
         exit(0);
     }
 
-print json_encode($data);
+print json_encode($data, JSON_UNESCAPED_UNICODE);
 ?>
