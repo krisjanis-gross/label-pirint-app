@@ -36,10 +36,9 @@ try {
 
     //$printable_text = "āĀēĒŪūīĪŠšģĢķĶĻļžŽČčņŅ";
 
-$print_data =  '{"line1":"1. EK Augu pase 2. LV 3. VAAD 4. R.Nr 3001694 Z\/s “Bētras”","line2":"5. Part 17FE-18  6. Bot. Nos: Malus Mill.","line3":"6. SĪPOLIŅŠ  ((MM106))","line4":"7. Kategorija: (MM106) Šķira: 1  Daudzums: 1 ZP-b2"} ';
+$print_data =  '{"line1":"1. EK Augu pase 2. LV 3. VAAD 4. R.Nr 3001694 Z\/s “Bētras”","line2":"5. Part 17FE-18  6. Bot. Nos: Malus Mill.","line3":"6. SĪPOLIŅŠ  ((MM106))","line4":"7. Kat: (MM106) Šķira: 1  Daudz: 1 ZP-b2"} ';
 $print_data_json = json_decode($print_data);
 
-$printer -> setTextSize (5,5);
 
 $line1 = $print_data_json->{'line1'} ;
 $line2 = $print_data_json->{'line2'} ;
@@ -47,20 +46,40 @@ $line3 = $print_data_json->{'line3'} ;
 $line4 = $print_data_json->{'line4'} ;
 
 
-$printer ->setLineSpacing(80);
+$printer -> setLineSpacing(30);
+$my_command = Printer::ESC . "g";
+$printer->getPrintConnector()->write($my_command);
+
+$my_command = Printer::ESC . "l" . chr(42);
+$printer->getPrintConnector()->write($my_command);
+
 
 $encoded_text_for_printer = encode_4_printer($line1, $encoding_map );
 $printer -> textRaw( $encoded_text_for_printer );
 $printer -> text("\n");
+
+
 $encoded_text_for_printer = encode_4_printer($line2, $encoding_map );
 $printer -> textRaw( $encoded_text_for_printer );
 $printer -> text("\n");
+
+
 $encoded_text_for_printer = encode_4_printer($line3, $encoding_map );
+$printer -> setDoubleStrike(true);
+$printer -> setEmphasis(true);
+$my_command = Printer::ESC . "M";
+
 $printer -> textRaw( $encoded_text_for_printer );
 $printer -> text("\n");
+$printer -> selectPrintMode (Printer::MODE_FONT_A);
+
+$my_command = Printer::ESC . "g";
 $encoded_text_for_printer = encode_4_printer($line4, $encoding_map );
 $printer -> textRaw( $encoded_text_for_printer );
 $printer -> text("\n");
+
+
+
 /*
     $printer ->setLineSpacing(40);
     $printer -> text("āžščģņķļīūē\n");
