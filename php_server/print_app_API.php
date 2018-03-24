@@ -156,6 +156,24 @@ $db->close();
 
 
 
+
+if ($request_type == 'scroll_paper') {
+  $request_data = $request->request_data;
+/*var_dump ($request);
+  var_dump ($request_data);*/
+  $direction = $request_data->direction;
+  $step = $request_data->step;
+
+  require_once("print_worker.php");
+  scroll_paper( $direction, $step ) ;
+  $data = [
+      "message" => "done!"
+  ];
+}
+
+
+
+
 if ($request_type == 'get_potcelms_suggestions') {
   $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
   $results = $db->query('select distinct (potcelms) from products;');

@@ -166,6 +166,37 @@ doPrint () {
 }
 
 
+scrollUp () {
+
+    let request_data = {
+      direction: "up",
+      step: 10
+    };
+
+
+    this.backendData.scroll_paper (request_data).then(data => {
+                                    this.showToast (data.message);
+                                      },
+                                  err => console.log(err));
+
+}
+
+scrollDown () {
+
+    let request_data = {
+      direction: "down",
+      step: 10
+    };
+
+
+    this.backendData.scroll_paper (request_data).then(data => {
+                                    this.showToast (data.message);
+                                      },
+                                  err => console.log(err));
+
+}
+
+
 showToast(message: string) {
    let toast = this.toastCtrl.create({
      message: message,

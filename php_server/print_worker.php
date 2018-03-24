@@ -4,116 +4,105 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 
-/* Change to the correct path if you copy this example! */
 require __DIR__ . '//escpos-php/autoload.php';
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
 use Mike42\Escpos\CapabilityProfiles\DefaultCapabilityProfile;
 
-
-
 const INPUT_ENCODING = "UTF-8";
 const REPLACEMENT_CHAR = "?";
 
 
+function scroll_paper( $direction, $step = 10) {
+    if (!is_numeric ($step)) $step = 10;
+
+    if ($direction == "up")
+      $command = "J";
+    else
+      $command = "j";
 
 
-try {
     $connector = new CupsPrintConnector("EPSON_LX-350");
     $profile = DefaultCapabilityProfile::getInstance();
     $printer = new Printer($connector,$profile);
 
-    // send custom command to use LATVIAN charset
-    $my_command = Printer::ESC . "(t" . chr(3) . chr(0) .
-                                        chr(48) . chr (14) . chr(32);
+    $my_command = Printer::ESC . "j" . chr($step);
     $printer->getPrintConnector()->write($my_command);
-    $my_command = Printer::ESC . "t" . chr(48);
-    $printer->getPrintConnector()->write($my_command);
-
-
-    $encoding_map = get_encoding_map ();
-
-
-    //$printable_text = "āĀēĒŪūīĪŠšģĢķĶĻļžŽČčņŅ";
-
-$print_data =  '{"line1":"1. EK Augu pase 2. LV 3. VAAD 4. R.Nr 3001694 Z\/s “Bētras”","line2":"5. Part 17FE-18  6. Bot. Nos: Malus Mill.","line3":"6. SĪPOLIŅŠ  ((MM106))","line4":"7. Kat: (MM106) Šķira: 1  Daudz: 1 ZP-b2"} ';
-$print_data_json = json_decode($print_data);
-
-
-$line1 = $print_data_json->{'line1'} ;
-$line2 = $print_data_json->{'line2'} ;
-$line3 = $print_data_json->{'line3'} ;
-$line4 = $print_data_json->{'line4'} ;
-
-
-$printer -> setLineSpacing(30);
-$my_command = Printer::ESC . "g";
-$printer->getPrintConnector()->write($my_command);
-
-$my_command = Printer::ESC . "l" . chr(42);
-$printer->getPrintConnector()->write($my_command);
-
-
-$encoded_text_for_printer = encode_4_printer($line1, $encoding_map );
-$printer -> textRaw( $encoded_text_for_printer );
-$printer -> text("\n");
-
-
-$encoded_text_for_printer = encode_4_printer($line2, $encoding_map );
-$printer -> textRaw( $encoded_text_for_printer );
-$printer -> text("\n");
-
-
-$encoded_text_for_printer = encode_4_printer($line3, $encoding_map );
-$printer -> setDoubleStrike(true);
-$printer -> setEmphasis(true);
-$my_command = Printer::ESC . "M";
-
-$printer -> textRaw( $encoded_text_for_printer );
-$printer -> text("\n");
-$printer -> selectPrintMode (Printer::MODE_FONT_A);
-
-$my_command = Printer::ESC . "g";
-$encoded_text_for_printer = encode_4_printer($line4, $encoding_map );
-$printer -> textRaw( $encoded_text_for_printer );
-$printer -> text("\n");
-
-
-
-/*
-    $printer ->setLineSpacing(40);
-    $printer -> text("āžščģņķļīūē\n");
-    $printer -> text("12345\n");
-*/
-
-    /* Close printer */
     $printer -> close();
-} catch (Exception $e) {
-    echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
 }
 
+function print_label ($print_data ) {
+      try {
+          $connector = new CupsPrintConnector("EPSON_LX-350");
+          $profile = DefaultCapabilityProfile::getInstance();
+          $printer = new Printer($connector,$profile);
 
-/*
-function asciiCheck($char, $extended = false)
-  {
-      if (strlen($char) != 1) {
-          // Multi-byte string
-          return false;
-      }
-      $num = ord($char);
-      if ($num > 31 && $num < 127) { // Printable
-          return true;
-      }
-      if ($num == 10) { // New-line (printer will take these)
-          return true;
-      }
-      if ($extended && $num > 127) {
-          return true;
-      }
-      return false;
-  }
+          // send custom command to use LATVIAN charset
+          $my_command = Printer::ESC . "(t" . chr(3) . chr(0) .
+                                              chr(48) . chr (14) . chr(32);
+          $printer->getPrintConnector()->write($my_command);
+          $my_command = Printer::ESC . "t" . chr(48);
+          $printer->getPrintConnector()->write($my_command);
 
-*/
+
+          $encoding_map = get_encoding_map ();
+
+
+          //$printable_text = "āĀēĒŪūīĪŠšģĢķĶĻļžŽČčņŅ";
+
+      $print_data =  '{"line1":"1. EK Augu pase 2. LV 3. VAAD 4. R.Nr 3001694 Z\/s “Bētras”","line2":"5. Part 17FE-18  6. Bot. Nos: Malus Mill.","line3":"6. SĪPOLIŅŠ  ((MM106))","line4":"7. Kat: (MM106) Šķira: 1  Daudz: 1 ZP-b2"} ';
+      $print_data_json = json_decode($print_data);
+
+
+      $line1 = $print_data_json->{'line1'} ;
+      $line1_encoded = encode_4_printer($line1, $encoding_map );
+      $line2 = $print_data_json->{'line2'} ;
+      $line2_encoded = encode_4_printer($line2, $encoding_map );
+      $line3 = $print_data_json->{'line3'} ;
+      $line3_encoded = encode_4_printer($line3, $encoding_map );
+      $line4 = $print_data_json->{'line4'} ;
+      $line4_encoded = encode_4_printer($line4, $encoding_map );
+
+
+      $printer -> setLineSpacing(30);
+      $my_command = Printer::ESC . "g";
+      $printer->getPrintConnector()->write($my_command);
+
+      $my_command = Printer::ESC . "l" . chr(42);
+      $printer->getPrintConnector()->write($my_command);
+
+
+
+      $printer -> textRaw( $line1_encoded );
+      $printer -> text("\n");
+
+      $printer -> textRaw( $line2_encoded );
+      $printer -> text("\n");
+
+
+      $printer -> setDoubleStrike(true);
+      $printer -> setEmphasis(true);
+      $my_command = Printer::ESC . "M";
+
+      $printer -> textRaw( $line3_encoded );
+
+      $printer -> text("\n");
+      $printer -> selectPrintMode (Printer::MODE_FONT_A);
+
+
+      $my_command = Printer::ESC . "g";
+      $printer -> textRaw( $line4_encoded );
+      $printer -> text("\n");
+
+
+          /* Close printer */
+          $printer -> close();
+      } catch (Exception $e) {
+          echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+      }
+
+}
+
 
 function encode_4_printer($printable_text, $encodeMap ) {
 //   return  $printable_text;
@@ -125,8 +114,7 @@ function encode_4_printer($printable_text, $encodeMap ) {
           $char = mb_substr($printable_text, $i, 1, INPUT_ENCODING);
           if (isset($encodeMap[$char])) {
               $rawText[$j] = $encodeMap[$char];
-          } // elseif (asciiCheck($char)) {
-            //  $rawText[$j] = $char;
+          }
          // } elseif ($char === "\r") {
               /* Skip past Windows line endings (UTF-8 usage) */
         //      continue;

@@ -143,6 +143,22 @@ saveSortData (request_data) {
                           .toPromise();
 }
 
+
+scroll_paper (request_data) {
+  // get default data from Server
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
+  let post_parameters = {
+    request_type: "scroll_paper",
+    request_data: request_data
+  };
+  return   this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+                          .map(data => data.json())
+                          .toPromise();
+}
+
+
 getPotcelmuSuggestions () {
   // get default data from Server
   let headers = new Headers();

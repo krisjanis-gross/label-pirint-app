@@ -18,7 +18,7 @@
           <h2 (click)="change_sort($event)">{{this.backendData.mainBot_nosaukums}} {{this.backendData.mainPotcelms}}</h2>
         </ion-col>
         <ion-col col-2 col-sm-4 col-md-4 col-lg-4 col-xl-6>
-          <button (click)="change_sort($event)" ion-button full icon-left ><ion-icon name='create'></ion-icon>Labot</button>
+          <button (click)="change_sort($event)" ion-button full icon-left ><ion-icon name='create'></ion-icon>Mainīt</button>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -64,6 +64,8 @@
       </ion-row>
   </ion-grid>
     <button ion-button full icon-left (click)="doPrint()"><ion-icon name='print' >Drukāt</ion-icon></button>
+    <button ion-button  icon-left (click)="scrollUp()"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augsu</button>
+    <button ion-button  icon-left (click)="scrollDown()"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju</button>
   </ion-card-content>
   </ion-card>
 
