@@ -26,7 +26,7 @@ function scroll_paper( $direction, $step = 10) {
     $profile = DefaultCapabilityProfile::getInstance();
     $printer = new Printer($connector,$profile);
 
-    $my_command = Printer::ESC . "j" . chr($step);
+    $my_command = Printer::ESC . $command . chr($step);
     $printer->getPrintConnector()->write($my_command);
     $printer -> close();
 }
@@ -50,7 +50,7 @@ function print_label ($print_data ) {
 
           //$printable_text = "āĀēĒŪūīĪŠšģĢķĶĻļžŽČčņŅ";
 
-      $print_data =  '{"line1":"1. EK Augu pase 2. LV 3. VAAD 4. R.Nr 3001694 Z\/s “Bētras”","line2":"5. Part 17FE-18  6. Bot. Nos: Malus Mill.","line3":"6. SĪPOLIŅŠ  ((MM106))","line4":"7. Kat: (MM106) Šķira: 1  Daudz: 1 ZP-b2"} ';
+      //$print_data =  '{"line1":"1. EK Augu pase 2. LV 3. VAAD 4. R.Nr 3001694 Z\/s “Bētras”","line2":"5. Part 17FE-18  6. Bot. Nos: Malus Mill.","line3":"6. SĪPOLIŅŠ  ((MM106))","line4":"7. Kat: (MM106) Šķira: 1  Daudz: 1 ZP-b2"} ';
       $print_data_json = json_decode($print_data);
 
 

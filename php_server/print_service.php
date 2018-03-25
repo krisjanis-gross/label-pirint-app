@@ -16,14 +16,14 @@
 $db_file = "print_app.db";
 
 // loop forever
-$loop_counter = 10;
+$loop_counter = 1000;
 while ($loop_counter > 0)   {
       // read print queue
       $print_job  = get_current_print_job ();
       var_dump($print_job);
       if ($print_job)
         {
-          print_label ($print_job);
+          send_label_to_printing ($print_job);
           update_print_job_status($print_job);
         }
       else
@@ -80,10 +80,19 @@ function update_print_job_status($print_job) {
 
 
 
-function print_label ($print_job) {
-   // TODO:
-   print "<br> printing teh label ";
-   var_dump($print_job["print_object_json"]);
+function send_label_to_printing ($print_job) {
+
+   print "<br> printing teh label<br> ";
+
+   $label_data = $print_job["print_object_json"];
+
+   var_dump($label_data);
+    print "<br> <br> ";
+
+   require_once("print_worker.php");
+   print_label( $label_data ) ;
+
+
    sleep(3);
 
 }
