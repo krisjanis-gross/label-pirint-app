@@ -19,20 +19,32 @@ $db_file = "print_app.db";
 
   if ($request_type == 'get_sort_list') {
 
-    $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+    $cached_list = apcu_fetch ('sort_list');
 
-    $results = $db->query('select * from products order by title ASC;');
-    $data = array ();
-    while ($row = $results->fetchArray()) {
-        $list_item = [
-          "id" => $row['id'],
-          "title" => $row['title'],
-          "bot_nosaukums" => $row['bot_nosaukums'],
-          "potcelms" => $row['potcelms']
-          ];
-        $data [] = $list_item;
-    	}
-    	$db->close();
+    if ($cached_list == FALSE) {
+          // get the list from DB
+          $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+
+          $results = $db->query('select * from products order by title ASC;');
+          $data = array ();
+          while ($row = $results->fetchArray()) {
+              $list_item = [
+                "id" => $row['id'],
+                "title" => $row['title'],
+                "bot_nosaukums" => $row['bot_nosaukums'],
+                "potcelms" => $row['potcelms']
+                ];
+              $data [] = $list_item;
+          	}
+          	$db->close();
+            apcu_store ('sort_list', $data);
+            //error_log ("sort list from SQL");
+          }
+      else {
+        $data = $cached_list;
+        //error_log ("sort list from APC");
+      }
+
   }
 
 
@@ -64,6 +76,7 @@ $db_file = "print_app.db";
     $data = [
         "message" => "Data saved: " . $productID .   $Nosaukums . $BotNosaukums . $Potcelms
     ];
+    apcu_delete ('sort_list');
   }
 
 
@@ -167,7 +180,7 @@ if ($request_type == 'scroll_paper') {
   require_once("print_worker.php");
   scroll_paper( $direction, $step ) ;
   $data = [
-      "message" => "done!"
+      "message" => "$direction $step done"
   ];
 }
 

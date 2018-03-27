@@ -166,11 +166,11 @@ doPrint () {
 }
 
 
-scrollUp () {
+scrollUp (step) {
 
     let request_data = {
       direction: "up",
-      step: 10
+      step: step
     };
 
 
@@ -181,11 +181,11 @@ scrollUp () {
 
 }
 
-scrollDown () {
+scrollDown (step) {
 
     let request_data = {
       direction: "down",
-      step: 10
+      step: step
     };
 
 
