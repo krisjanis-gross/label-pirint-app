@@ -186,10 +186,6 @@ getConfigData () {
   return   this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
                         .map(data => data.json())
                         .toPromise();
-
-
-
-
 }
 
 saveConfigData (request_data) {

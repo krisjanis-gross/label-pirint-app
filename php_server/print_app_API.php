@@ -1,4 +1,5 @@
 <?php
+require_once("print_app_functions.php");
 
 // db connection
 $db_file = "print_app.db";
@@ -12,8 +13,6 @@ $db_file = "print_app.db";
 	else {
 		echo "Not called properly with request_type parameter!";
 	}
-
-
 
 
 
@@ -113,21 +112,14 @@ if ($request_type == 'get_config_data') {
       "Line1" => $row['Line1'],
       "Line2" => $row['Line2'],
       "Line3" => $row['Line3'],
-      "Line4" => $row['Line4']
+      "Line4" => $row['Line4'],
+      "lmargin" => $row['lmargin'],
+      "gap_after_label" => $row['gap_after_label'],
+      "scroll_parameter" => $row['scroll_parameter']
   ];
 
 }
 
-function get_config_data_from_db () {
-  global $db_file;
-  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
-
-  $results = $db->query('select * from configData where id = 1;');
-  while ($row = $results->fetchArray()) {
-    return $row;
-    }
-    $db->close();
-}
 
 
 
@@ -141,6 +133,9 @@ if ($request_type == 'save_config_data') {
   $Line2 = $request_data->Line2;
   $Line3 = $request_data->Line3;
   $Line4 = $request_data->Line4;
+  $lmargin = $request_data->lmargin;
+  $gap_after_label = $request_data->gap_after_label;
+  $scroll_parameter = $request_data->scroll_parameter;
 
   $db = new SQLite3($db_file);
 
@@ -152,7 +147,11 @@ if ($request_type == 'save_config_data') {
     `Line1` = '$Line1',
     `Line2` = '$Line2',
     `Line3` = '$Line3',
-    `Line4` = '$Line4'
+    `Line4` = '$Line4',
+    `lmargin` = '$lmargin',
+    `gap_after_label` = '$Lgap_after_label',
+    `scroll_parameter` = '$scroll_parameter'
+
     WHERE id = 1 ;");
 
 // update skaits favourites
@@ -160,7 +159,7 @@ if ($request_type == 'save_config_data') {
 // update skirnes favourites
 
 $db->close();
-
+apcu_delete ('config_data');
   $data = [
       "message" => "Saglabāts!"
   ];
@@ -177,10 +176,12 @@ if ($request_type == 'scroll_paper') {
   $direction = $request_data->direction;
   $step = $request_data->step;
 
+  $scroll_parameter =  get_config_parameter ('scroll_parameter');
+  $scroll_step = $step  * $scroll_parameter;
   require_once("print_worker.php");
-  scroll_paper( $direction, $step ) ;
+  scroll_paper( $direction, $scroll_step ) ;
   $data = [
-      "message" => "$direction $step done"
+      "message" => "$direction $scroll_step done"
   ];
 }
 
@@ -268,6 +269,7 @@ if ($request_type == 'get_print_list_history') {
     $db->close();
 
 }
+
 
 
 

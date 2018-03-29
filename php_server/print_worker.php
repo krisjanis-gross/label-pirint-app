@@ -31,10 +31,11 @@ function scroll_paper( $direction, $step = 10) {
     $printer -> close();
 }
 
-function print_label ($print_data ) {
+function print_label ($print_data ,$left_margin, $gap_to_next_label ) {
       try {
 
-          $gap_to_next_label = "40";
+          //$gap_to_next_label = "40";
+          //$left_margin = 42;
           $connector = new CupsPrintConnector("EPSON_LX-350");
           $profile = DefaultCapabilityProfile::getInstance();
           $printer = new Printer($connector,$profile);
@@ -70,7 +71,7 @@ function print_label ($print_data ) {
           $my_command = Printer::ESC . "g";  // set small font
           $printer->getPrintConnector()->write($my_command);
 
-          $my_command = Printer::ESC . "l" . chr(42);
+          $my_command = Printer::ESC . "l" . chr($left_margin);
           $printer->getPrintConnector()->write($my_command);
 
 

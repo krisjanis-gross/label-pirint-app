@@ -11,6 +11,8 @@
 //https://stackoverflow.com/questions/2036654/run-php-script-as-daemon-process
 
 
+require_once("print_worker.php");
+require_once("print_app_functions.php");
 
 // parameters
 $db_file = "print_app.db";
@@ -87,10 +89,12 @@ function send_label_to_printing ($print_job) {
    $label_data = $print_job["print_object_json"];
 
    var_dump($label_data);
-    print "<br> <br> ";
 
-   require_once("print_worker.php");
-   print_label( $label_data ) ;
+    $left_margin =  get_config_parameter ('left_margin');
+    $gap_to_next_label =  get_config_parameter ('gap_to_next_label');
+
+   print "<br> left margin: $left_margin  <br> gap_to_next_label: $gap_to_next_labe  <br>";
+   print_label( $label_data,$left_margin, $gap_to_next_label ) ;
 
 
    sleep(3);

@@ -28,6 +28,9 @@ Line1;
 Line2;
 Line3;
 Line4;
+lmargin;
+gap_after_label;
+scroll_parameter;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,  public http: Http, private storage: Storage, public toastCtrl: ToastController, private backendData: BackendData) {
       this.get_config_data ();
@@ -46,6 +49,10 @@ Line4;
       this.Line2 = data.Line2;
       this.Line3 = data.Line3;
       this.Line4 = data.Line4;
+      this.lmargin = data.lmargin;
+      this.gap_after_label = data.gap_after_label;
+      this.scroll_parameter = data.scroll_parameter;
+
 
       },
   err => console.log(err));
@@ -66,6 +73,9 @@ saveSettings () {
     Line2: this.Line2,
     Line3: this.Line3,
     Line4: this.Line4,
+    lmargin: this.lmargin,
+    gap_after_label: this.gap_after_label,
+    scroll_parameter: this.scroll_parameter,
   };
 
 
