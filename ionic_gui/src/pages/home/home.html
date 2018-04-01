@@ -63,22 +63,30 @@
         </ion-col>
       </ion-row>
   </ion-grid>
-    <button ion-button full icon-left (click)="doPrint()"><ion-icon name='print' >Drukāt</ion-icon></button>
-    <button ion-button  icon-left (click)="scrollUp(10)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augsu</button>
-    <button ion-button  icon-left (click)="scrollDown(10)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju</button>
-
-    <button ion-button  icon-left (click)="scrollUp(100)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augsu 10x</button>
-    <button ion-button  icon-left (click)="scrollDown(100)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju 10x</button>
+    <button ion-button full icon-left (click)="doPrint()"><ion-icon name='print'>Drukāt</ion-icon></button>
   </ion-card-content>
   </ion-card>
+<ion-card>
+<ion-card-content>
+  <button ion-button color="light"  icon-left (click)="scrollUp(1)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augšu</button>
+  <button ion-button color="light"  icon-left (click)="scrollDown(1)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju</button>
 
-<h3>Drukāšanas rinda</h3>
+  <button ion-button color="light" icon-left (click)="scrollUp(10)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augšu 10x</button>
+  <button ion-button color="light"  icon-left (click)="scrollDown(10)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju 10x</button>
+</ion-card-content>
+</ion-card>
+
+<ion-item>
+  <ion-label>Drukāšanas rinda ieslēgt/izslēgt -></ion-label>
+  <ion-toggle (click)="update_queue()" [(ngModel)]="this.backendData.print_queue_status" ></ion-toggle>
+</ion-item>
+
 <ion-item-group>
   <ion-item-divider color="light">Šodien</ion-item-divider>
-
   <ion-item *ngFor="let item of this.backendData.queueToday" >
     {{item.title}} ( {{item.printed_count}}/{{item.count}})
-    <ion-note item-right color="{{item.color}}" >{{item.status}}</ion-note>
+      <button *ngIf=" item.status == 'Gaida' || item.status == 'Drukā' " ion-button item-right color="danger" icon-left (click)="cancelPrint(item.id)"><ion-icon name='close'></ion-icon>Atcelt</button>
+      <ion-note item-right color="{{item.color}}" >  {{item.status}}</ion-note>
   </ion-item>
 
 </ion-item-group>

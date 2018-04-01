@@ -1,4 +1,8 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Print service
 
 // Read print queue.
@@ -11,35 +15,53 @@
 //https://stackoverflow.com/questions/2036654/run-php-script-as-daemon-process
 
 
-require_once("print_worker.php");
-require_once("print_app_functions.php");
+require_once(__DIR__ . "//print_worker.php");
+require_once(__DIR__ . "//print_app_functions.php");
 
 // parameters
 $db_file = "print_app.db";
 
+
+$start_queue =  htmlspecialchars($_GET["start_queue"]);
+if ($start_queue) start_print_queue ();
+
+// by default sart the queue
+//start_print_queue ();
+
 // loop forever
-$loop_counter = 1000;
-while ($loop_counter > 0)   {
-      // read print queue
-      $print_job  = get_current_print_job ();
-      var_dump($print_job);
-      if ($print_job)
-        {
-          send_label_to_printing ($print_job);
-          update_print_job_status($print_job);
-        }
+//$loop_counter = 1000;
+//while ($loop_counter > 0)   {
+//while (true)   {
+
+      // check is queue is enabled (not paused)
+      $queue_running = get_print_queue_status();
+
+      if ($queue_running == true)
+          {
+    //          error_log(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,queue running");
+              // read print queue
+              $print_job  = get_current_print_job ();
+      //        var_dump($print_job);
+              if ($print_job)
+                {
+                  send_label_to_printing ($print_job);
+                  update_print_job_status($print_job);
+                }
+              else
+                {
+  //                print "<br> nothing to print right now.";
+                }
+          }
       else
-        {
-          print "<br> nothing to print right now.";
-          sleep(3);
-
-        }
-
-
+      {
+  //      error_log("..........................................queue stopped");
+      }
       // pause some time
-      sleep(0.1);
-      $loop_counter--;
-  }
+//      sleep(3);
+
+
+    //  $loop_counter--;
+//  }
 
 
 function get_current_print_job (){
@@ -77,7 +99,7 @@ function update_print_job_status($print_job) {
   print "<br> <br> <br> ";
   var_dump (  $update_query);
   $results = $db->query($update_query);
-
+  $db->close();
 }
 
 
@@ -90,11 +112,11 @@ function send_label_to_printing ($print_job) {
 
    var_dump($label_data);
 
-    $left_margin =  get_config_parameter ('left_margin');
-    $gap_to_next_label =  get_config_parameter ('gap_to_next_label');
+    $left_margin =  get_config_parameter ('lmargin');
+    $gap_after_label =  get_config_parameter ('gap_after_label');
 
-   print "<br> left margin: $left_margin  <br> gap_to_next_label: $gap_to_next_labe  <br>";
-   print_label( $label_data,$left_margin, $gap_to_next_label ) ;
+   print "<br> left margin: $left_margin  <br> gap_after_label: $gap_after_label  <br>";
+   print_label( $label_data,$left_margin, $gap_after_label ) ;
 
 
    sleep(3);

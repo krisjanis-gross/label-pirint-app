@@ -1,4 +1,9 @@
 <?php
+/*
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+*/
 require_once("print_app_functions.php");
 
 // db connection
@@ -149,7 +154,7 @@ if ($request_type == 'save_config_data') {
     `Line3` = '$Line3',
     `Line4` = '$Line4',
     `lmargin` = '$lmargin',
-    `gap_after_label` = '$Lgap_after_label',
+    `gap_after_label` = '$gap_after_label',
     `scroll_parameter` = '$scroll_parameter'
 
     WHERE id = 1 ;");
@@ -187,6 +192,65 @@ if ($request_type == 'scroll_paper') {
 
 
 
+
+if ($request_type == 'get_queue_status') {
+  $status = get_print_queue_status ();
+
+//  var_dump ( $status);
+
+  $data = [
+      "queue_status" =>  $status
+  ];
+}
+
+
+if ($request_type == 'update_queue') {
+
+  $current_status = get_print_queue_status ();
+
+  if ($current_status)
+    {
+     pause_print_queue();
+     $message = "Paused";
+    }
+  else
+    {
+      start_print_queue ();
+      $message = "Started";
+    }
+
+  $data = [
+      "message" => $message
+  ];
+
+
+}
+
+
+
+
+
+if ($request_type == 'cancel_print_job') {
+  $request_data = $request->request_data;
+/*var_dump ($request);
+  var_dump ($request_data);*/
+
+  $job_id = $request_data->queue_id;
+  $status = 3; // atcelts
+
+
+  global $db_file;
+  $db = new SQLite3($db_file);
+
+  $update_query = "update PrintQueue set status = $status where id = $job_id;";
+
+  $results = $db->query($update_query);
+  $db->close();
+
+  $data = [
+      "message" => "atcelts: $job_id"
+  ];
+}
 
 if ($request_type == 'get_potcelms_suggestions') {
   $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
@@ -227,7 +291,7 @@ if ($request_type == 'get_sort_list_favourites') {
 
 if ($request_type == 'get_print_list_today') {
   $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 0 1 2 3
-  $tmp_color_list = array("dark","primary","");
+  $tmp_color_list = array("dark","primary","","");
 
   $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
 
@@ -309,7 +373,7 @@ $line3  =  str_replace ( "{{nosaukums}}" , $Title , $line3  );
 $line3  =  str_replace ( "{{potcelms}}" , $Potcelms , $line3  );
 
 // 7. Kategorija: {{kategorija}} Šķira: {{skira}}  Daudzums: {{daudzums}} ZP-b2
-$line4  =  str_replace ( "{{kategorija}}" , $Potcelms , $line4  );
+$line4  =  str_replace ( "{{kategorija}}" , $Kategorija , $line4  );
 $line4  =  str_replace ( "{{skira}}" , $Skira , $line4  );
 $line4  =  str_replace ( "{{daudzums}}" , $Daudzums , $line4  );
 

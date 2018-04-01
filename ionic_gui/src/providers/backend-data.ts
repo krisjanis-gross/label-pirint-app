@@ -29,6 +29,7 @@ export class BackendData {
   public mainDaudzums= "";
   public mainSkaits= "";
   public mainSkaitsFavoriiti= "";
+  public print_queue_status="";
 
   public queueToday: Array<{id: string; title: string,count:string, printed_count:string, satus: string, color:string}>;
   public queueOld: Array<{id: string; title: string,count:string, printed_count:string, satus: string, color:string}>;
@@ -45,7 +46,7 @@ export class BackendData {
 
     setInterval(data=>{
                         this.getQueueToday()
-                        },5000);
+                      },1000);
 
     // Or to get a key/value pair
 
@@ -159,6 +160,24 @@ scroll_paper (request_data) {
 }
 
 
+cancel_print_job (request_data) {
+  // get default data from Server
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
+  let post_parameters = {
+    request_type: "cancel_print_job",
+    request_data: request_data
+  };
+  return   this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+                          .map(data => data.json())
+                          .toPromise();
+
+
+}
+
+
+
 getPotcelmuSuggestions () {
   // get default data from Server
   let headers = new Headers();
@@ -235,9 +254,39 @@ getQueueToday () {
                                                   },
                                           err => console.log(err));
 
+ // get queue tmp_status
+ let headers2 = new Headers();
+ headers.append('Content-Type', 'application/json');
+
+ let post_parameters2 = {
+   request_type: "get_queue_status"
+ };
+
+ this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters2))
+                       .map(data => data.json())
+                       .toPromise().then(data => {
+                                           this.print_queue_status = data.queue_status;
+                                           console.log("print_queue_status loaded");
+                                                 },
+                                         err => console.log(err));
 
 }
 
+
+update_queue () {
+  // get default data from Server
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
+  let post_parameters = {
+    request_type: "update_queue"
+  };
+  return   this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+                          .map(data => data.json())
+                          .toPromise();
+
+
+}
 getQueueHistory () {
 
 if (this.queueOld.length < 1) { // skip refresh if data is already there.

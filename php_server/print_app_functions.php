@@ -11,6 +11,7 @@ function get_config_data_from_db () {
           $data = $row;
       }
     $db->close();
+  }
   else {
     $data = $cached_list;
     apcu_store ('config_data', $data);
@@ -23,6 +24,19 @@ function get_config_data_from_db () {
 function get_config_parameter ($parameter_key) {
   $config_array = get_config_data_from_db ();
   return $config_array[$parameter_key];
+}
+
+function start_print_queue () {
+  apcu_store ('print_queue_satus', true);
+}
+
+function pause_print_queue() {
+  apcu_store ('print_queue_satus', false);
+}
+
+function get_print_queue_status () {
+  $status = apcu_fetch ('print_queue_satus');
+  return $status;
 }
 
  ?>

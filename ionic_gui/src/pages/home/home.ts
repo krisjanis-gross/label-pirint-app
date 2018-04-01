@@ -92,7 +92,6 @@ getData2 () {
 }
 
   change_sort(event) {
-    // That's right, we're pushing to ourselves!
     this.navCtrl.push(ListPage);
   }
 
@@ -139,21 +138,7 @@ doPrint () {
             this.get_main_form_data();
             },
             err => console.log(err));
-
-
           // send
-
-
-
-
-
-
-
-
-
-
-
-
         }
       }
     ]
@@ -167,35 +152,55 @@ doPrint () {
 
 
 scrollUp (step) {
-
     let request_data = {
       direction: "up",
       step: step
     };
-
-
     this.backendData.scroll_paper (request_data).then(data => {
                                     this.showToast (data.message);
                                       },
                                   err => console.log(err));
-
 }
 
 scrollDown (step) {
-
     let request_data = {
       direction: "down",
       step: step
     };
-
-
     this.backendData.scroll_paper (request_data).then(data => {
                                     this.showToast (data.message);
                                       },
                                   err => console.log(err));
-
 }
 
+update_queue () {
+
+    this.backendData.update_queue ().then(data => {
+                                    this.showToast (data.message);
+                                      },
+                                  err => console.log(err));
+}
+
+cancelPrint(queue_id){
+  let confirm = this.alertCtrl.create({
+    title: 'Skaidri zini?' ,
+    buttons: [
+      {
+        text: 'Atcelt šo darbu',
+        handler: () => {
+          let request_data = {
+            queue_id: queue_id
+          };
+          this.backendData.cancel_print_job (request_data).then(data => {
+                                          this.showToast (data.message);
+                                            },
+                                        err => console.log(err));
+        }
+      }
+    ]
+  });
+  confirm.present();
+}
 
 showToast(message: string) {
    let toast = this.toastCtrl.create({
@@ -203,7 +208,6 @@ showToast(message: string) {
      duration: 2000,
      position: 'top'
    });
-
    toast.present(toast);
  }
 
