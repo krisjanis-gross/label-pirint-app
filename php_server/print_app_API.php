@@ -2,7 +2,6 @@
 /*
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
 */
 require_once("print_app_functions.php");
 
@@ -172,6 +171,18 @@ apcu_delete ('config_data');
 
 
 
+if ($request_type == 'reboot_server') {
+ $return = exec ( "sudo reboot"  );
+  $data = [
+      "message" => "Restart initiated"
+  ];
+}
+if ($request_type == 'shutdown_server') {
+ $return = exec ( "sudo shutdown"  );
+  $data = [
+      "message" => "Shutdown initiated"
+  ];
+}
 
 
 if ($request_type == 'scroll_paper') {

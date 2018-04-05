@@ -9,6 +9,8 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from 'ionic-angular';
 import {BackendData} from '../../providers/backend-data';
 
+import { AlertController } from 'ionic-angular';
+
 /**
  * Generated class for the Product page.
  *
@@ -32,7 +34,7 @@ lmargin;
 gap_after_label;
 scroll_parameter;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,  public http: Http, private storage: Storage, public toastCtrl: ToastController, private backendData: BackendData) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,  public http: Http, private storage: Storage, public toastCtrl: ToastController, private backendData: BackendData,public alertCtrl: AlertController) {
       this.get_config_data ();
   }
 
@@ -86,6 +88,50 @@ saveSettings () {
 err => console.log(err));
 
 }
+
+
+reboot_server () {
+
+  let confirm = this.alertCtrl.create({
+    title: 'Skaidri zini?' ,
+    buttons: [
+      {
+        text: 'Jā, restartēt',
+        handler: () => {
+          this.backendData.rebootServer ().then(data => {
+            this.showToast (data.message);
+            },
+          err => console.log(err));
+
+
+        }
+      }
+    ]
+  });
+  confirm.present();
+}
+
+shutdown_server () {
+  let confirm = this.alertCtrl.create({
+    title: 'Skaidri zini?' ,
+    buttons: [
+      {
+        text: 'Jā, shutdown',
+        handler: () => {
+          this.backendData.shutdownServer ().then(data => {
+            this.showToast (data.message);
+            },
+          err => console.log(err));
+
+
+        }
+      }
+    ]
+  });
+  confirm.present();
+}
+
+
 
 showToast(message: string) {
    let toast = this.toastCtrl.create({

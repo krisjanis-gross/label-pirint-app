@@ -10,7 +10,7 @@ while (true) {
   //Code Logic
    exec ( $command  );
 
-   sleep (3);
+   sleep (2);
 
   //sleep and usleep could be useful
     if (PHP_SAPI == "cli") {

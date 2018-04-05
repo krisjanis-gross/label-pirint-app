@@ -65,13 +65,13 @@
 
 <ion-card>
   <ion-card-header>
-    Rīki (todo)
+    Rīki
   </ion-card-header>
     <ion-card-content>
-    <button ion-button   >Reboot the system</button>
-    <button ion-button   >Shutdown the system</button>
-    <button ion-button   >Import data</button>
-    <button ion-button   >Export data</button>
+    <button (click)="reboot_server()" ion-button>Restart</button>
+    <button (click)="shutdown_server()" ion-button>Shutdown</button>
+    <button ion-button>(todo) Import data</button>
+    <button ion-button>(todo) Export data</button>
   </ion-card-content>
 </ion-card>
 

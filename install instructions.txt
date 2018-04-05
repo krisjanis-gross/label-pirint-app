@@ -1,0 +1,82 @@
+1. install apache + php + sqlite
+https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md
+sudo apt-get install sqlite3
+sudo apt-get install php7.0-sqlite3
+sudo apache2ctl restart
+https://stackoverflow.com/questions/948899/how-to-enable-sqlite3-for-php
+
+
+install apcu
+https://serverpilot.io/community/articles/how-to-install-the-php-apcu-extension.html
+sudo apt-get -y install gcc make autoconf libc-dev pkg-config
+sudo pecl install apcu
+
+sudo bash -c "echo extension=apcu.so > /etc/php/7.0/fpm/conf.d/apcu.ini"
+sudo service 
+
+2. clone repo
+  git clone https://github.com/krisjanis-gross/label-pirint-app.git
+  
+  todo : how to copy repo to /var/www/html folder
+
+3. set up printer :)
+
+http://www.penguintutor.com/linux/printing-cups
+sudo apt-get install cups
+sudo usermod -a -G lpadmin pi
+
+http://127.0.0.1:631
+
+
+4. set up daemon that will periodically start a print worker.
+
+sudo gedit /etc/systemd/system/printappdaemon.service
+
+set contents to 
+
+[Unit]
+Description=PHP print app service
+#Requires=mysqld.service memcached.service #May your script needs mysql or other services to run.
+#After=mysqld.service memcached.service
+
+[Service]
+User=root
+Type=simple
+TimeoutSec=0
+PIDFile=/var/run/printappdaemin.pid
+ExecStart=/usr/bin/php7.0 -f /var/www/html/print_scheduler_daemon.php arg1 arg2> /dev/null 2>/dev/null
+#ExecStart=/usr/bin/php -f /var/www/html/print_service.php arg1 arg2> /home/pi/Desktop/a1.log 2>/home/pi/Desktop/a2.log
+#ExecStop=/bin/kill -HUP $MAINPID
+#ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+
+Restart=on-failure
+RestartSec=42s
+
+StandardOutput=null #If you don't want to make toms of logs you can set it null if you sent a file or some other options it will send all php output to this one.
+StandardError=/home/pi/Desktop/myphpdaemon.log
+[Install]
+WantedBy=default.target
+
+
+
+
+
+
+
+systemctl start printappdaemon
+systemctl enable printappdaemon
+systemctl stop printappdaemon
+
+
+5. Allow reboot to apache user/process
+
+find out the apache process name. ps -efa | grep www-data
+find out the reboot command full path
+which reboot
+/sbin/reboot
+
+
+sudo gedit /etc/sudoers and add line
+www-data ALL=(ALL) NOPASSWD: /sbin/reboot
+www-data ALL=(ALL) NOPASSWD: /sbin/shutdown

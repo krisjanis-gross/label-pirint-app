@@ -237,6 +237,31 @@ printLabel  (request_data) {
 
 }
 
+
+rebootServer () {
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
+  let post_parameters = {
+    request_type: "reboot_server"
+  };
+  return   this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+                          .map(data => data.json())
+                          .toPromise();
+}
+
+shutdownServer () {
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+
+  let post_parameters = {
+    request_type: "shutdown_server"
+  };
+  return   this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+                          .map(data => data.json())
+                          .toPromise();
+}
+
 getQueueToday () {
   // get default data from Server
   let headers = new Headers();

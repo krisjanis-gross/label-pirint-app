@@ -6,7 +6,7 @@ webpackJsonp([0],{
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__list_list__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(55);
@@ -201,7 +201,7 @@ var HomePage = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProductPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
@@ -329,7 +329,7 @@ webpackEmptyAsyncContext.id = 212;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfigurationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
@@ -351,6 +351,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 /**
  * Generated class for the Product page.
  *
@@ -358,13 +359,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * on Ionic pages and navigation.
  */
 var ConfigurationPage = (function () {
-    function ConfigurationPage(navCtrl, navParams, http, storage, toastCtrl, backendData) {
+    function ConfigurationPage(navCtrl, navParams, http, storage, toastCtrl, backendData, alertCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.http = http;
         this.storage = storage;
         this.toastCtrl = toastCtrl;
         this.backendData = backendData;
+        this.alertCtrl = alertCtrl;
         this.get_config_data();
     }
     ConfigurationPage.prototype.ionViewDidLoad = function () {
@@ -405,6 +407,40 @@ var ConfigurationPage = (function () {
             _this.showToast(data.message);
         }, function (err) { return console.log(err); });
     };
+    ConfigurationPage.prototype.reboot_server = function () {
+        var _this = this;
+        var confirm = this.alertCtrl.create({
+            title: 'Skaidri zini?',
+            buttons: [
+                {
+                    text: 'Jā, restartēt',
+                    handler: function () {
+                        _this.backendData.rebootServer().then(function (data) {
+                            _this.showToast(data.message);
+                        }, function (err) { return console.log(err); });
+                    }
+                }
+            ]
+        });
+        confirm.present();
+    };
+    ConfigurationPage.prototype.shutdown_server = function () {
+        var _this = this;
+        var confirm = this.alertCtrl.create({
+            title: 'Skaidri zini?',
+            buttons: [
+                {
+                    text: 'Jā, shutdown',
+                    handler: function () {
+                        _this.backendData.shutdownServer().then(function (data) {
+                            _this.showToast(data.message);
+                        }, function (err) { return console.log(err); });
+                    }
+                }
+            ]
+        });
+        confirm.present();
+    };
     ConfigurationPage.prototype.showToast = function (message) {
         var toast = this.toastCtrl.create({
             message: message,
@@ -415,9 +451,9 @@ var ConfigurationPage = (function () {
     };
     ConfigurationPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-configuration',template:/*ion-inline-start:"/home/user/print_app/label-print-app/ionic_gui/src/pages/configuration/configuration.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Uzstādījumi</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n\n\n    <ion-list>\n\n        <ion-item>\n\n          <ion-label floating>Server URL</ion-label>\n\n          <ion-input type="text" [(ngModel)]="ServerURL"></ion-input>\n\n        </ion-item>\n\n    <!--  <ion-item>\n\n          <ion-label> Sinhronizēt ar WEB</ion-label>\n\n          <ion-toggle [(ngModel)]="SyncON" ></ion-toggle>\n\n        </ion-item>\n\n    -->\n\n    </ion-list>\n\n\n\n      <ion-list>\n\n        <ion-item>\n\n          <ion-label floating>Gads/partija</ion-label>\n\n          <ion-input type="text" [(ngModel)]="GadsPartija" ></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 1</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line1"></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 2</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line2"></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 3</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line3"></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 4</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line4"></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label floating>Kreisā atkāpe</ion-label>\n\n          <ion-input type="text" [(ngModel)]="lmargin"></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label floating>Atstarpe starp izdrukām (Advances the vertical print position n/216 inch  = n/0,334 mm)</ion-label>\n\n          <ion-input type="text" [(ngModel)]="gap_after_label"></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label floating>Scroll parametrs (n/216 inch = n/0,334 mm)</ion-label>\n\n          <ion-input type="text" [(ngModel)]="scroll_parameter"></ion-input>\n\n        </ion-item>\n\n\n\n      </ion-list>\n\n\n\n      <button ion-button  full (click)="saveSettings()" >Saglabāt</button>\n\n\n\n\n\n<ion-card>\n\n  <ion-card-header>\n\n    Rīki (todo)\n\n  </ion-card-header>\n\n    <ion-card-content>\n\n    <button ion-button   >Reboot the system</button>\n\n    <button ion-button   >Shutdown the system</button>\n\n    <button ion-button   >Import data</button>\n\n    <button ion-button   >Export data</button>\n\n  </ion-card-content>\n\n</ion-card>\n\n\n\n\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"/home/user/print_app/label-print-app/ionic_gui/src/pages/configuration/configuration.html"*/,
+            selector: 'page-configuration',template:/*ion-inline-start:"/home/user/print_app/label-print-app/ionic_gui/src/pages/configuration/configuration.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Uzstādījumi</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n\n\n    <ion-list>\n\n        <ion-item>\n\n          <ion-label floating>Server URL</ion-label>\n\n          <ion-input type="text" [(ngModel)]="ServerURL"></ion-input>\n\n        </ion-item>\n\n    <!--  <ion-item>\n\n          <ion-label> Sinhronizēt ar WEB</ion-label>\n\n          <ion-toggle [(ngModel)]="SyncON" ></ion-toggle>\n\n        </ion-item>\n\n    -->\n\n    </ion-list>\n\n\n\n      <ion-list>\n\n        <ion-item>\n\n          <ion-label floating>Gads/partija</ion-label>\n\n          <ion-input type="text" [(ngModel)]="GadsPartija" ></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 1</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line1"></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 2</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line2"></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 3</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line3"></ion-input>\n\n        </ion-item>\n\n        <ion-item>\n\n          <ion-label floating>Line 4</ion-label>\n\n          <ion-input type="text" [(ngModel)]="Line4"></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label floating>Kreisā atkāpe</ion-label>\n\n          <ion-input type="text" [(ngModel)]="lmargin"></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label floating>Atstarpe starp izdrukām (Advances the vertical print position n/216 inch  = n/0,334 mm)</ion-label>\n\n          <ion-input type="text" [(ngModel)]="gap_after_label"></ion-input>\n\n        </ion-item>\n\n\n\n        <ion-item>\n\n          <ion-label floating>Scroll parametrs (n/216 inch = n/0,334 mm)</ion-label>\n\n          <ion-input type="text" [(ngModel)]="scroll_parameter"></ion-input>\n\n        </ion-item>\n\n\n\n      </ion-list>\n\n\n\n      <button ion-button  full (click)="saveSettings()" >Saglabāt</button>\n\n\n\n\n\n<ion-card>\n\n  <ion-card-header>\n\n    Rīki\n\n  </ion-card-header>\n\n    <ion-card-content>\n\n    <button (click)="reboot_server()" ion-button>Restart</button>\n\n    <button (click)="shutdown_server()" ion-button>Shutdown</button>\n\n    <button ion-button>(todo) Import data</button>\n\n    <button ion-button>(todo) Export data</button>\n\n  </ion-card-content>\n\n</ion-card>\n\n\n\n\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"/home/user/print_app/label-print-app/ionic_gui/src/pages/configuration/configuration.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_4__ionic_storage__["b" /* Storage */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */], __WEBPACK_IMPORTED_MODULE_5__providers_backend_data__["a" /* BackendData */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_4__ionic_storage__["b" /* Storage */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */], __WEBPACK_IMPORTED_MODULE_5__providers_backend_data__["a" /* BackendData */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], ConfigurationPage);
     return ConfigurationPage;
 }());
@@ -447,7 +483,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(392);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_home_home__ = __webpack_require__(138);
@@ -526,7 +562,7 @@ var AppModule = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(257);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(138);
@@ -801,6 +837,26 @@ var BackendData = (function () {
             .map(function (data) { return data.json(); })
             .toPromise();
     };
+    BackendData.prototype.rebootServer = function () {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var post_parameters = {
+            request_type: "reboot_server"
+        };
+        return this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    BackendData.prototype.shutdownServer = function () {
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var post_parameters = {
+            request_type: "shutdown_server"
+        };
+        return this.http.post(this.ServerURL + '/print_app_API.php', JSON.stringify(post_parameters))
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
     BackendData.prototype.getQueueToday = function () {
         var _this = this;
         // get default data from Server
@@ -873,7 +929,7 @@ var BackendData = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__product_product__ = __webpack_require__(139);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_backend_data__ = __webpack_require__(56);
