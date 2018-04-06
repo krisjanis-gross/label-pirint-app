@@ -8,73 +8,85 @@
 </ion-header>
 
 <ion-content padding>
-
-    <ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-10 col-sm-8 col-md-8 col-lg-8 col-xl-6>
         <ion-item>
           <ion-label floating>Server URL</ion-label>
           <ion-input type="text" [(ngModel)]="ServerURL"></ion-input>
         </ion-item>
+      </ion-col>
+      <ion-col col-2 col-sm-4 col-md-4 col-lg-4 col-xl-6>
+          <button ion-button   (click)="saveSettings()" >Saglabāt</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
     <!--  <ion-item>
           <ion-label> Sinhronizēt ar WEB</ion-label>
           <ion-toggle [(ngModel)]="SyncON" ></ion-toggle>
         </ion-item>
     -->
-    </ion-list>
-
-      <ion-list>
-        <ion-item>
-          <ion-label floating>Gads/partija</ion-label>
-          <ion-input type="text" [(ngModel)]="GadsPartija" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Line 1</ion-label>
-          <ion-input type="text" [(ngModel)]="Line1"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Line 2</ion-label>
-          <ion-input type="text" [(ngModel)]="Line2"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Line 3</ion-label>
-          <ion-input type="text" [(ngModel)]="Line3"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Line 4</ion-label>
-          <ion-input type="text" [(ngModel)]="Line4"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating>Kreisā atkāpe</ion-label>
-          <ion-input type="text" [(ngModel)]="lmargin"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating>Atstarpe starp izdrukām (Advances the vertical print position n/216 inch  = n/0,334 mm)</ion-label>
-          <ion-input type="text" [(ngModel)]="gap_after_label"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating>Scroll parametrs (n/216 inch = n/0,334 mm)</ion-label>
-          <ion-input type="text" [(ngModel)]="scroll_parameter"></ion-input>
-        </ion-item>
-
-      </ion-list>
-
-      <button ion-button  full (click)="saveSettings()" >Saglabāt</button>
+    <ion-card>
+      <ion-card-header>
+        Rīki
+      </ion-card-header>
+        <ion-card-content>
+        <button (click)="reboot_server()" ion-button>Restart</button>
+        <button (click)="shutdown_server()" ion-button>Shutdown</button>
+        <button ion-button>(todo) Import data</button>
+        <button ion-button>(todo) Export data</button>
+      </ion-card-content>
+    </ion-card>
 
 
-<ion-card>
-  <ion-card-header>
-    Rīki
-  </ion-card-header>
-    <ion-card-content>
-    <button (click)="reboot_server()" ion-button>Restart</button>
-    <button (click)="shutdown_server()" ion-button>Shutdown</button>
-    <button ion-button>(todo) Import data</button>
-    <button ion-button>(todo) Export data</button>
-  </ion-card-content>
-</ion-card>
+    <ion-card>
+      <ion-card-header>
+        Drukāšanas parametri
+      </ion-card-header>
+      <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label floating>Gads/partija</ion-label>
+              <ion-input type="text" [(ngModel)]="GadsPartija" ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>Line 1</ion-label>
+              <ion-input type="text" [(ngModel)]="Line1"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>Line 2</ion-label>
+              <ion-input type="text" [(ngModel)]="Line2"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>Line 3</ion-label>
+              <ion-input type="text" [(ngModel)]="Line3"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>Line 4</ion-label>
+              <ion-input type="text" [(ngModel)]="Line4"></ion-input>
+            </ion-item>
 
+            <ion-item>
+              <ion-label floating>Kreisā atkāpe</ion-label>
+              <ion-input type="text" [(ngModel)]="lmargin"></ion-input>
+            </ion-item>
 
+            <ion-item>
+              <ion-label floating>Atstarpe starp izdrukām (Advances the vertical print position n/216 inch  = n/0,334 mm)</ion-label>
+              <ion-input type="text" [(ngModel)]="gap_after_label"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label floating>Scroll parametrs (n/216 inch = n/0,334 mm)</ion-label>
+              <ion-input type="text" [(ngModel)]="scroll_parameter"></ion-input>
+            </ion-item>
+
+          </ion-list>
+
+          <button ion-button  full (click)="saveSettings()" >Saglabāt</button>
+
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
