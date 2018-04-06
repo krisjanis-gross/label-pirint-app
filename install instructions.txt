@@ -1,5 +1,9 @@
-1. install apache + php + sqlite
+1. install apache + php + sqlite + apcu
 https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md
+
+sudo apt-get install apache2 -y
+sudo apt-get install php libapache2-mod-php -y
+
 sudo apt-get install sqlite3
 sudo apt-get install php7.0-sqlite3
 sudo apache2ctl restart
@@ -7,17 +11,23 @@ https://stackoverflow.com/questions/948899/how-to-enable-sqlite3-for-php
 
 
 install apcu
-https://serverpilot.io/community/articles/how-to-install-the-php-apcu-extension.html
-sudo apt-get -y install gcc make autoconf libc-dev pkg-config
-sudo pecl install apcu
-
-sudo bash -c "echo extension=apcu.so > /etc/php/7.0/fpm/conf.d/apcu.ini"
-sudo service 
+    https://serverpilot.io/community/articles/how-to-install-the-php-apcu-extension.html
+    sudo apt-get -y install gcc make autoconf libc-dev pkg-config
+    sudo pecl install apcu
+    sudo bash -c "echo extension=apcu.so > /etc/php/7.0/apache2/conf.d/apcu.ini"
+    sudo apache2ctl restart
+ or
+    sudo apt-get install php7.0-apcu -y
+    sudo bash -c "echo extension=apcu.so > /etc/php/7.0/apache2/conf.d/apcu.ini"
+    sudo apache2ctl restart
 
 2. clone repo
   git clone https://github.com/krisjanis-gross/label-pirint-app.git
-  
+
   todo : how to copy repo to /var/www/html folder
+  sudo chmod 777 /var/www/html
+
+
 
 3. set up printer :)
 
@@ -32,7 +42,7 @@ http://127.0.0.1:631
 
 sudo gedit /etc/systemd/system/printappdaemon.service
 
-set contents to 
+set contents to
 
 [Unit]
 Description=PHP print app service
@@ -60,13 +70,10 @@ WantedBy=default.target
 
 
 
-
-
-
-
 systemctl start printappdaemon
-systemctl enable printappdaemon
 systemctl stop printappdaemon
+systemctl enable printappdaemon
+
 
 
 5. Allow reboot to apache user/process
