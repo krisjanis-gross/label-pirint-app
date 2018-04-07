@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {  NavController, NavParams } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 //import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+//mport { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { ListPage } from '../list/list';
 
@@ -26,7 +26,7 @@ export class ProductPage {
   productId;
   potcelms_suggestions;
 
-  constructor(public navCtrl: NavController, public params: NavParams, public http: Http, private backendData: BackendData, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public params: NavParams, /*public http: Http,*/ private backendData: BackendData, public toastCtrl: ToastController) {
 
     this.productId = this.params.get('item').id;
 

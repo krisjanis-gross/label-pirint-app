@@ -202,11 +202,10 @@ var HomePage = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProductPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__list_list__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_backend_data__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__list_list__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_backend_data__ = __webpack_require__(56);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -220,7 +219,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 //import { Injectable } from '@angular/core';
-
+//mport { Http } from '@angular/http';
 
 
 
@@ -231,10 +230,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * on Ionic pages and navigation.
  */
 var ProductPage = (function () {
-    function ProductPage(navCtrl, params, http, backendData, toastCtrl) {
+    function ProductPage(navCtrl, params, /*public http: Http,*/ backendData, toastCtrl) {
         this.navCtrl = navCtrl;
         this.params = params;
-        this.http = http;
         this.backendData = backendData;
         this.toastCtrl = toastCtrl;
         this.productId = this.params.get('item').id;
@@ -256,7 +254,7 @@ var ProductPage = (function () {
         };
         this.backendData.saveSortData(request_data).then(function (data) {
             _this.showToast(data.message);
-            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__list_list__["a" /* ListPage */]);
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__list_list__["a" /* ListPage */]);
         }, function (err) { return console.log(err); });
     };
     ProductPage.prototype.showToast = function (message) {
@@ -280,9 +278,10 @@ var ProductPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-product',template:/*ion-inline-start:"/home/user/print_app/label-pirint-app/ionic_gui/src/pages/product/product.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>Šķirnes dati</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <ion-card>\n\n    <ion-list>\n\n\n\n  <ion-item>\n\n    <ion-label floating>Nosaukums</ion-label>\n\n    <ion-input type="text" [(ngModel)]="Nosaukums"></ion-input>\n\n  </ion-item>\n\n  <ion-item>\n\n    <ion-label floating>Bot. nos.</ion-label>\n\n    <ion-input type="text" [(ngModel)]="BotNosaukums"></ion-input>\n\n  </ion-item>\n\n\n\n  <ion-item>\n\n    <ion-label floating>Potcelms</ion-label>\n\n    <ion-input type="text" [(ngModel)]="Potcelms"></ion-input>\n\n  </ion-item>\n\n\n\n</ion-list>\n\n  <ion-buttons >\n\n      <button ion-button *ngFor="let x of potcelms_suggestions" (click)="set_potcelms(x)">{{x}}</button>\n\n    </ion-buttons>\n\n\n\n\n\n\n\n\n\n<button ion-button  full (click)="saglabaatSkirnesDatus()">Saglabāt</button>\n\n  </ion-card>\n\n</ion-content>\n\n'/*ion-inline-end:"/home/user/print_app/label-pirint-app/ionic_gui/src/pages/product/product.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_5__providers_backend_data__["a" /* BackendData */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__providers_backend_data__["a" /* BackendData */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_backend_data__["a" /* BackendData */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]) === "function" && _d || Object])
     ], ProductPage);
     return ProductPage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=product.js.map

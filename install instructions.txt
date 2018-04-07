@@ -6,6 +6,7 @@ sudo apt-get install php libapache2-mod-php -y
 
 sudo apt-get install sqlite3
 sudo apt-get install php7.0-sqlite3
+sudo apt-get install php7.0-mbstring
 sudo apache2ctl restart
 https://stackoverflow.com/questions/948899/how-to-enable-sqlite3-for-php
 
@@ -37,6 +38,8 @@ sudo usermod -a -G lpadmin pi
 
 http://127.0.0.1:631
 
+Connect the USB printer to CUPS.
+printer name is important. e.g. "EPSON_LX-350"
 
 4. set up daemon that will periodically start a print worker.
 
@@ -46,8 +49,6 @@ set contents to
 
 [Unit]
 Description=PHP print app service
-#Requires=mysqld.service memcached.service #May your script needs mysql or other services to run.
-#After=mysqld.service memcached.service
 
 [Service]
 User=root
@@ -80,7 +81,7 @@ systemctl enable printappdaemon
 
 find out the apache process name. ps -efa | grep www-data
 find out the reboot command full path
-which reboot
+sudo which reboot
 /sbin/reboot
 
 

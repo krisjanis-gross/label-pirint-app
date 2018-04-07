@@ -22,7 +22,13 @@ require_once(__DIR__ . "//print_app_functions.php");
 $db_file = "print_app.db";
 
 
-$start_queue =  htmlspecialchars($_GET["start_queue"]);
+if (isset($_GET['start_queue'])) {
+    $start_queue =  htmlspecialchars($_GET['start_queue']);
+} else {
+    $start_queue = false;
+}
+
+
 if ($start_queue) start_print_queue ();
 
 // by default sart the queue
