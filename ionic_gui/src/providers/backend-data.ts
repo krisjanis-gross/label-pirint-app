@@ -46,7 +46,7 @@ export class BackendData {
 
     setInterval(data=>{
                         this.getQueueToday()
-                      },1000);
+                      },10000);
 
     // Or to get a key/value pair
 

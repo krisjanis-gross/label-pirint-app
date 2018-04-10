@@ -9,46 +9,55 @@ require_once("print_app_functions.php");
 $db_file = "print_app.db";
 
     //http://stackoverflow.com/questions/15485354/angular-http-post-to-php-and-undefined
-  $postdata = file_get_contents("php://input");
-	if (isset($postdata)) {
-		$request = json_decode($postdata);
-		$request_type = $request->request_type;
-	}
-	else {
+$postdata = file_get_contents("php://input");
+if (isset($postdata)) {
+	$request = json_decode($postdata);
+	$request_type = $request->request_type;
+}
+else {
 		echo "Not called properly with request_type parameter!";
-	}
+}
 
 
 
-  if ($request_type == 'get_sort_list') {
+if ($request_type == 'get_sort_list') {
+  $data = get_sort_list();
+}
 
-    $cached_list = apcu_fetch ('sort_list');
+if ($request_type == 'test1') {
+update_count_suggestion_array(5);
 
-    if ($cached_list == FALSE) {
-          // get the list from DB
-          $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+}
 
-          $results = $db->query('select * from products order by title ASC;');
-          $data = array ();
-          while ($row = $results->fetchArray()) {
-              $list_item = [
-                "id" => $row['id'],
-                "title" => $row['title'],
-                "bot_nosaukums" => $row['bot_nosaukums'],
-                "potcelms" => $row['potcelms']
-                ];
-              $data [] = $list_item;
-          	}
-          	$db->close();
-            apcu_store ('sort_list', $data);
-            //error_log ("sort list from SQL");
-          }
-      else {
-        $data = $cached_list;
-        //error_log ("sort list from APC");
-      }
+if ($request_type == 'get_sort_list_favourites') {
+  // - list: auto favourites ( top today+top total )
+  // should query print history to find out most printed items for (a) today and (b) total
 
-  }
+  $product_list_fav = get_sort_list();
+  usort($product_list_fav, 'comparePrintCount');
+  $product_list_fav = array_slice($product_list_fav, 0, 10);
+  //var_dump ($product_list);
+  $data = $product_list_fav;
+  /*$db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+
+  $results = $db->query('select * from products where printCount > 0 ORDER BY printCount DESC LIMIT 10;');
+  $data = array ();
+  while ($row = $results->fetchArray()) {
+      $list_item = [
+        "id" => $row['id'],
+        "title" => $row['title'],
+        "bot_nosaukums" => $row['bot_nosaukums'],
+        "potcelms" => $row['potcelms'],
+        "printCount" => $row['printCount']
+        ];
+      $data [] = $list_item;
+    }
+    $db->close();
+*/
+
+
+}
+
 
 
   if ($request_type == 'save_sort_data') {
@@ -108,7 +117,6 @@ if ($request_type == 'get_main_data') {
 
 
 if ($request_type == 'get_config_data') {
-
   $row = get_config_data_from_db ();
   $data = [
       "GadsPartija" =>  $row['GadsPartija'],
@@ -121,7 +129,6 @@ if ($request_type == 'get_config_data') {
       "gap_after_label" => $row['gap_after_label'],
       "scroll_parameter" => $row['scroll_parameter']
   ];
-
 }
 
 
@@ -202,13 +209,9 @@ if ($request_type == 'scroll_paper') {
 }
 
 
-
-
 if ($request_type == 'get_queue_status') {
   $status = get_print_queue_status ();
-
 //  var_dump ( $status);
-
   $data = [
       "queue_status" =>  $status
   ];
@@ -216,9 +219,7 @@ if ($request_type == 'get_queue_status') {
 
 
 if ($request_type == 'update_queue') {
-
   $current_status = get_print_queue_status ();
-
   if ($current_status)
     {
      pause_print_queue();
@@ -229,12 +230,9 @@ if ($request_type == 'update_queue') {
       start_print_queue ();
       $message = "Started";
     }
-
   $data = [
       "message" => $message
   ];
-
-
 }
 
 
@@ -279,25 +277,7 @@ if ($request_type == 'get_potcelms_suggestions') {
 
 
 
-if ($request_type == 'get_sort_list_favourites') {
-  // - list: auto favourites ( top today+top total )
-  // should query print history to find out most printed items for (a) today and (b) total
-  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
 
-  $results = $db->query('select * from products where printCount > 0 ORDER BY printCount DESC LIMIT 10;');
-  $data = array ();
-  while ($row = $results->fetchArray()) {
-      $list_item = [
-        "id" => $row['id'],
-        "title" => $row['title'],
-        "bot_nosaukums" => $row['bot_nosaukums'],
-        "potcelms" => $row['potcelms']
-        ];
-      $data [] = $list_item;
-    }
-    $db->close();
-
-}
 
 
 if ($request_type == 'get_print_list_today') {
@@ -350,8 +330,8 @@ if ($request_type == 'get_print_list_history') {
 
 if ($request_type == 'print_label') {
   $request_data = $request->request_data;
-var_dump ($request);
-  var_dump ($request_data);
+//var_dump ($request);
+  //var_dump ($request_data);
   $id = $request_data->id;
   $Title = $request_data->Title;
   $Skaits = $request_data->Skaits;
@@ -400,21 +380,17 @@ $print_object = json_encode($print_object, JSON_UNESCAPED_UNICODE);
 $db = new SQLite3($db_file);
   // update main form data to reflect the last print_app_API
 $date_now = date('Y-m-d H:i:s');
-  $results = $db->query("INSERT INTO `PrintQueue`(`id`,`title`,`status`,`datetime`,`print_object_json`,`label_count`,`sync_status`,`printed_count`) VALUES (NULL,'$Title',0,'$date_now','$print_object',$Skaits,0,0) ;");
+$results = $db->query("INSERT INTO `PrintQueue`(`id`,`title`,`status`,`datetime`,`print_object_json`,`label_count`,`sync_status`,`printed_count`) VALUES (NULL,'$Title',0,'$date_now','$print_object',$Skaits,0,0) ;");
+$db->close();
 
 // update skaits favourites
-$count_suggestion_array = array();
-$results = $db->query("select distinct (label_count), count(label_count) as c from printQueue group by label_count order by c DESC limit 20;");
-while ($row = $results->fetchArray()) {
-    $count_suggestion_array [] =   $row['label_count'];
-  }
-$count_suggestion_array = json_encode ($count_suggestion_array, JSON_UNESCAPED_UNICODE);
+$count_suggestion_array_json = update_count_suggestion_array ($Skaits);
 
-// update print count for  favourites
+
+// update print count for products. Used to determine favourites
+  $db = new SQLite3($db_file);
   $results = $db->query("update products set printCount = printCount  + 1 where id = $id");
-
-
-
+  increase_print_counter_in_cache($id);
 //$db = new SQLite3($db_file);
   // update main form data to reflect the last print_app_API
 
@@ -427,7 +403,7 @@ $count_suggestion_array = json_encode ($count_suggestion_array, JSON_UNESCAPED_U
     `Kategorija` = '$Kategorija',
     `skira` = '$Skira',
     `daudzums` = '$Daudzums',
-    `skaitsFavoriiti` = '$count_suggestion_array'
+    `skaitsFavoriiti` = '$count_suggestion_array_json'
     WHERE id = 1 ;");
 
 // update skaits favourites
@@ -436,7 +412,7 @@ $count_suggestion_array = json_encode ($count_suggestion_array, JSON_UNESCAPED_U
 
 $db->close();
   $data = [
-      "message" => "Pievienots rindai " . $id . $Title . $Skaits
+      "message" => "Pievienots rindai $Title x $Skaits"
   ];
 }
 

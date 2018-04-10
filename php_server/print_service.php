@@ -1,7 +1,8 @@
 <?php
-
+/*
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+*/
 
 // Print service
 
@@ -22,53 +23,25 @@ require_once(__DIR__ . "//print_app_functions.php");
 $db_file = "print_app.db";
 
 
-if (isset($_GET['start_queue'])) {
-    $start_queue =  htmlspecialchars($_GET['start_queue']);
-} else {
-    $start_queue = false;
-}
+if (isset($_GET['start_queue']))
+    start_print_queue ();
 
+// check is queue is enabled (not paused)
+$queue_running = get_print_queue_status();
 
-if ($start_queue) start_print_queue ();
-
-// by default sart the queue
-//start_print_queue ();
-
-// loop forever
-//$loop_counter = 1000;
-//while ($loop_counter > 0)   {
-//while (true)   {
-
-      // check is queue is enabled (not paused)
-      $queue_running = get_print_queue_status();
-
-      if ($queue_running == true)
-          {
+if ($queue_running == true)
+  {
     //          error_log(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,queue running");
               // read print queue
-              $print_job  = get_current_print_job ();
+    $print_job  = get_current_print_job ();
       //        var_dump($print_job);
-              if ($print_job)
-                {
-                  send_label_to_printing ($print_job);
-                  update_print_job_status($print_job);
-                }
-              else
-                {
-  //                print "<br> nothing to print right now.";
-                }
-          }
-      else
+    if ($print_job)
       {
-  //      error_log("..........................................queue stopped");
+        send_label_to_printing ($print_job);
+        update_print_job_status($print_job);
       }
-      // pause some time
-//      sleep(3);
 
-
-    //  $loop_counter--;
-//  }
-
+}
 
 function get_current_print_job (){
   global $db_file;
@@ -123,9 +96,6 @@ function send_label_to_printing ($print_job) {
 
    print "<br> left margin: $left_margin  <br> gap_after_label: $gap_after_label  <br>";
    print_label( $label_data,$left_margin, $gap_after_label ) ;
-
-
-   sleep(3);
 
 }
 
