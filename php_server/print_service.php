@@ -44,32 +44,7 @@ if ($queue_running == true)
 }
 
 
-function get_current_print_job () {
-  $print_job_from_cache = apcu_fetch ('print_job_from_cache');
-  if ($print_job_from_cache == FALSE) {
-        global $db_file;
-        $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
-        // select record from print queue wit status 0 or 1 (new or printing) with the least id (oldest)
-        $results = $db->query("select * from PrintQueue where status < 2  ORDER BY id ASC LIMIT 1;");
-        //$data = array ();
-        if ($row = $results->fetchArray()) {
-          $print_job = [
-            "id" => $row['id'],
-            "title" => $row['title'],
-            "count" => $row['label_count'],
-            "printed_count" => $row['printed_count'],
-            "print_object_json" => $row['print_object_json'],
-            "status" => $row['status']
-            ];
-          }
-        else $print_job = NULL;
-        $db->close();
-        apcu_store ('print_job_from_cache',$print_job);
-    }
-  else
-    $print_job = $print_job_from_cache;
-  return $print_job;
-}
+
 
 function update_print_job_status($print_job) {
 
@@ -92,37 +67,6 @@ function update_print_job_status($print_job) {
 
     }
 
-}
-
-function update_single_job_in_cache ($print_job)
-{
-  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 0 1 2 3
-  $tmp_color_list = array("dark","primary","","");
-
-
-  $print_list_today_cache = apcu_fetch ('print_list_today_cache');
-  $job_id = $print_job["id"];
-  $array_id = find_array_key_id ($print_list_today_cache,'id',$id);
-
-  $print_list_today_cache[$array_id]["printed_count"]=$print_job['printed_count'];
-  $print_list_today_cache[$array_id]["status"]= $tmp_status_list[$print_job['status']];
-  $print_list_today_cache[$array_id]["color"]= $tmp_color_list[$print_job['status']];
-
-  apcu_store ('print_list_today_cache', $print_list_today_cache);
-
-}
-function update_print_job_in_db ($print_job) {
-  $job_id = $print_job["id"];
-  $status = $print_job["status"];
-  $new_printed_count = $print_job["printed_count"];
-
-  global $db_file;
-  $db = new SQLite3($db_file);
-  $update_query = "update PrintQueue set printed_count = $new_printed_count , status = $status where id = $job_id;";
-  print "<br> <br> <br> ";
-  var_dump (  $update_query);
-  $results = $db->query($update_query);
-  $db->close();
 }
 
 function send_label_to_printing ($print_job) {

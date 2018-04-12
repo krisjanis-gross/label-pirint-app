@@ -235,18 +235,33 @@ if ($request_type == 'cancel_print_job') {
   $job_id = $request_data->queue_id;
   $status = 3; // atcelts
 
+	$current_print_job = get_current_print_job();
 
-  global $db_file;
-  $db = new SQLite3($db_file);
+	if ($current_print_job['id'] == $job_id) {
+			//cancel current print job
+			$current_print_job['status'] = $status;
+			update_print_job_in_db ($current_print_job);
+			apcu_delete ('print_job_from_cache');
+			apcu_delete ('print_list_today_cache');
 
-  $update_query = "update PrintQueue set status = $status where id = $job_id;";
+	}
+	else
+	{
+			// cancel some other job in queue
+			global $db_file;
+		  $db = new SQLite3($db_file);
 
-  $results = $db->query($update_query);
-  $db->close();
+		  $update_query = "update PrintQueue set status = $status where id = $job_id;";
 
-  $data = [
-      "message" => "atcelts: $job_id"
-  ];
+		  $results = $db->query($update_query);
+		  $db->close();
+			apcu_delete ('print_list_today_cache');
+
+	}
+	$data = [
+			"message" => "atcelts: $job_id"
+	];
+
 }
 
 if ($request_type == 'get_potcelms_suggestions') {

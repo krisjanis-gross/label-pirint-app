@@ -5,7 +5,7 @@ import {  NavController, NavParams } from 'ionic-angular';
 //import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-//import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage';
 import { ToastController } from 'ionic-angular';
 import {BackendData} from '../../providers/backend-data';
 
@@ -34,7 +34,7 @@ lmargin;
 gap_after_label;
 scroll_parameter;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,  /*public http: Http,*/ /*private storage: Storage,*/ public toastCtrl: ToastController, private backendData: BackendData,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,  /*public http: Http,*/ private storage: Storage, public toastCtrl: ToastController, private backendData: BackendData,public alertCtrl: AlertController) {
       this.get_config_data ();
   }
 
