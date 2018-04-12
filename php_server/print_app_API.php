@@ -26,35 +26,17 @@ if ($request_type == 'get_sort_list') {
 
 if ($request_type == 'test1') {
 update_count_suggestion_array(5);
-
 }
 
 if ($request_type == 'get_sort_list_favourites') {
   // - list: auto favourites ( top today+top total )
   // should query print history to find out most printed items for (a) today and (b) total
-
+  // (a) today - to do
   $product_list_fav = get_sort_list();
   usort($product_list_fav, 'comparePrintCount');
   $product_list_fav = array_slice($product_list_fav, 0, 10);
   //var_dump ($product_list);
   $data = $product_list_fav;
-  /*$db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
-
-  $results = $db->query('select * from products where printCount > 0 ORDER BY printCount DESC LIMIT 10;');
-  $data = array ();
-  while ($row = $results->fetchArray()) {
-      $list_item = [
-        "id" => $row['id'],
-        "title" => $row['title'],
-        "bot_nosaukums" => $row['bot_nosaukums'],
-        "potcelms" => $row['potcelms'],
-        "printCount" => $row['printCount']
-        ];
-      $data [] = $list_item;
-    }
-    $db->close();
-*/
-
 
 }
 
@@ -94,25 +76,31 @@ if ($request_type == 'get_sort_list_favourites') {
 
 
 if ($request_type == 'get_main_data') {
-  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+  $main_form_data_cache = apcu_fetch ('main_form_data');
+  if ($main_form_data_cache == FALSE) {
+      $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+      $results = $db->query('select * from mainFormData where id = 1;');
+      while ($row = $results->fetchArray()) {
+        $data = [
+            "id" =>  $row['productID'],
+            "title" => $row['productTitle'],
+            "bot_nosaukums" => $row['productBotNos'],
+            "potcelms" => $row['productPotcelms'],
+            "kategorija" => $row['Kategorija'],
+            "skira" => $row['skira'],
+            "daudzums" => $row['daudzums'],
+            "skaits" => $row['skaits'],
+            "skaits_favoriiti" =>  json_decode ($row['skaitsFavoriiti'])
+        ];
 
-  $results = $db->query('select * from mainFormData where id = 1;');
-  while ($row = $results->fetchArray()) {
-    $data = [
-        "id" =>  $row['productID'],
-        "title" => $row['productTitle'],
-        "bot_nosaukums" => $row['productBotNos'],
-        "potcelms" => $row['productPotcelms'],
-        "kategorija" => $row['Kategorija'],
-        "skira" => $row['skira'],
-        "daudzums" => $row['daudzums'],
-        "skaits" => $row['skaits'],
-        "skaits_favoriiti" =>  json_decode ($row['skaitsFavoriiti'])
-    ];
-
-    }
-    $db->close();
-
+        }
+        $db->close();
+        apcu_store ('main_form_data', $data);
+  }
+  else
+  {
+    $data = $main_form_data_cache;
+  }
 }
 
 
@@ -281,51 +269,68 @@ if ($request_type == 'get_potcelms_suggestions') {
 
 
 if ($request_type == 'get_print_list_today') {
-  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 0 1 2 3
-  $tmp_color_list = array("dark","primary","","");
+	$print_list_today_cache = apcu_fetch ('print_list_today_cache');
+	if ($print_list_today_cache == FALSE)
+		{
+			  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 0 1 2 3
+			  $tmp_color_list = array("dark","primary","","");
 
-  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+			  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
 
-  $results = $db->query("select * from PrintQueue where  datetime > datetime('now','localtime','-1 day') ORDER BY id DESC;");
-  $data = array ();
-  while ($row = $results->fetchArray()) {
-      $list_item = [
-        "id" => $row['id'],
-        "title" => $row['title'],
-        "count" => $row['label_count'],
-        "printed_count" => $row['printed_count'],
-        "status" => $tmp_status_list[$row['status']],
-        "color" => $tmp_color_list[$row['status']]
-        ];
-      $data [] = $list_item;
-    }
-    $db->close();
+			  $results = $db->query("select * from PrintQueue where  datetime > datetime('now','localtime','-1 day') ORDER BY id DESC;");
+			  $data = array ();
+			  while ($row = $results->fetchArray()) {
+			      $list_item = [
+			        "id" => $row['id'],
+			        "title" => $row['title'],
+			        "count" => $row['label_count'],
+			        "printed_count" => $row['printed_count'],
+			        "status" => $tmp_status_list[$row['status']],
+			        "color" => $tmp_color_list[$row['status']]
+			        ];
+			      $data [] = $list_item;
+			    }
+			    $db->close();
+
+					apcu_store ('print_list_today_cache', $data);
+			}
+	else
+		{
+			$data = $print_list_today_cache;
+		}
 }
 
 if ($request_type == 'get_print_list_history') {
-  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 1 2 3 4
-  $tmp_color_list = array("dark","primary","");
+	$print_list_history_cache = apcu_fetch ('print_list_history_cache');
+	if ($print_list_history_cache == FALSE)
+	  {
+				  $tmp_status_list = array("Gaida","Drukā","Gatavs","Atcelts"); // 1 2 3 4
+				  $tmp_color_list = array("dark","primary","");
 
-  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
+				  $db = new SQLite3($db_file,SQLITE3_OPEN_READONLY);
 
-  $results = $db->query("select * from PrintQueue where  datetime <= datetime('now','localtime','-1 day') ORDER BY id DESC LIMIT 30;");
-  $data = array ();
-  while ($row = $results->fetchArray()) {
-      $list_item = [
-        "id" => $row['id'],
-        "title" => $row['title'],
-        "count" => $row['label_count'],
-        "printed_count" => $row['printed_count'],
-        "status" => $tmp_status_list[$row['status']],
-        "color" => $tmp_color_list[$row['status']]
-        ];
-      $data [] = $list_item;
-    }
-    $db->close();
+				  $results = $db->query("select * from PrintQueue where  datetime <= datetime('now','localtime','-1 day') ORDER BY id DESC LIMIT 30;");
+				  $data = array ();
+				  while ($row = $results->fetchArray()) {
+				      $list_item = [
+				        "id" => $row['id'],
+				        "title" => $row['title'],
+				        "count" => $row['label_count'],
+				        "printed_count" => $row['printed_count'],
+				        "status" => $tmp_status_list[$row['status']],
+				        "color" => $tmp_color_list[$row['status']]
+				        ];
+				      $data [] = $list_item;
+				    }
+				    $db->close();
+           apcu_store ('print_list_history_cache', $data);
+	  }
+	else
+	  {
+	     $data = $print_list_history_cache;
+	  }
 
 }
-
-
 
 
 if ($request_type == 'print_label') {
@@ -383,6 +388,8 @@ $date_now = date('Y-m-d H:i:s');
 $results = $db->query("INSERT INTO `PrintQueue`(`id`,`title`,`status`,`datetime`,`print_object_json`,`label_count`,`sync_status`,`printed_count`) VALUES (NULL,'$Title',0,'$date_now','$print_object',$Skaits,0,0) ;");
 $db->close();
 
+apcu_delete ('print_list_today_cache');
+
 // update skaits favourites
 $count_suggestion_array_json = update_count_suggestion_array ($Skaits);
 
@@ -405,6 +412,20 @@ $count_suggestion_array_json = update_count_suggestion_array ($Skaits);
     `daudzums` = '$Daudzums',
     `skaitsFavoriiti` = '$count_suggestion_array_json'
     WHERE id = 1 ;");
+
+    $main_form_data_cahce = [
+        "id" =>  $id,
+        "title" => $Title,
+        "bot_nosaukums" => $Bot_nosaukums,
+        "potcelms" => $Potcelms,
+        "kategorija" => $Kategorija,
+        "skira" => $Skira,
+        "daudzums" => $Daudzums,
+        "skaits" => $Skaits,
+        "skaits_favoriiti" =>  json_decode ($count_suggestion_array_json)
+    ];
+    apcu_store ('main_form_data', $main_form_data_cahce);
+
 
 // update skaits favourites
 

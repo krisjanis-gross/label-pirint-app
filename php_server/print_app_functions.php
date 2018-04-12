@@ -113,7 +113,10 @@ function update_count_suggestion_array($curent_print_job_count_value) {
   {
         // use lsit from chche and add 1 to
         // add 1 to count?
-      $count_suggestion_array[$curent_print_job_count_value]++;
+      if (isset($count_suggestion_array[$curent_print_job_count_value]))
+          $count_suggestion_array[$curent_print_job_count_value]++;
+      else
+          $count_suggestion_array[$curent_print_job_count_value]=1;
       apcu_store ('count_suggestion',$count_suggestion_array);
     //  error_log('count suggestions from APC');
   }
