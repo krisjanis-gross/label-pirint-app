@@ -95,7 +95,7 @@ function find_array_key_id($products, $field, $value)
 }
 
 function update_count_suggestion_array($curent_print_job_count_value) {
-  $count_suggestion_array = apcu_fetch ('count_suggestion');
+  $count_suggestion_array = apcu_fetch ('count_suggestion'); 
   if ($count_suggestion_array == FALSE) {
       global $db_file;
       $count_suggestion_array = array();
@@ -188,8 +188,8 @@ function update_print_job_in_db ($print_job) {
   global $db_file;
   $db = new SQLite3($db_file);
   $update_query = "update PrintQueue set printed_count = $new_printed_count , status = $status where id = $job_id;";
-  print "<br> <br> <br> ";
-  var_dump (  $update_query);
+  //print "<br> <br> <br> ";
+//  var_dump (  $update_query);
   $results = $db->query($update_query);
   $db->close();
 }

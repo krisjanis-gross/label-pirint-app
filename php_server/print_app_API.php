@@ -240,7 +240,7 @@ if ($request_type == 'cancel_print_job') {
 	if ($current_print_job['id'] == $job_id) {
 			//cancel current print job
 			$current_print_job['status'] = $status;
-			update_print_job_in_db ($current_print_job);
+			update_print_job_in_db ($current_print_job); 
 			apcu_delete ('print_job_from_cache');
 			apcu_delete ('print_list_today_cache');
 
