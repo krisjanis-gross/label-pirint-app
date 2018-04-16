@@ -37,8 +37,8 @@ if ($queue_running == true)
       //        var_dump($print_job);
     if ($print_job)
       {
-        send_label_to_printing ($print_job);
         update_print_job_status($print_job);
+        send_label_to_printing ($print_job);
       }
 
 }
