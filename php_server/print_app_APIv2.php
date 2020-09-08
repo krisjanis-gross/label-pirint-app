@@ -461,6 +461,7 @@ $print_object  =  str_replace ( "{{Zona}}" , $Zona , $print_object  );
 $print_object  =  str_replace ( "{{Kods1}}" , $Kods1 , $print_object  );
 $print_object  =  str_replace ( "{{Suga}}" , $Suga , $print_object  );
 $print_object  =  str_replace ( "{{GadsPartija}} " , $GadsPartija , $print_object  );
+$print_object  =  str_replace ( "{{id}} " , $id , $print_object  );
 
 
 // save in queue
@@ -492,7 +493,7 @@ $db->close();
 
 if ($request_type == 'get_print_count_suggestions') {
   $count_suggestion_array = get_count_suggestion_array ();
-	
+
 	arsort ($count_suggestion_array);
   // take top 20 print counts
   //var_dump($count_suggestion_array);
