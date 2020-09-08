@@ -1,0 +1,7 @@
+-- windows.
+
+install wampp
+
+
+install apcu
+https://stackoverflow.com/questions/24448261/how-to-install-apcu-in-windows

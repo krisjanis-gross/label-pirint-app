@@ -1,0 +1,7 @@
+{
+  "name": "label-print-app-v2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

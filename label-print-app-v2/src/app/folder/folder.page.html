@@ -1,0 +1,123 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ this.backendData.ServerURL }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card>
+    <ion-card-content (click)="change_product()">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-sm="6">
+
+          <h1 >{{this.backendData.selectedProduct4Print.Nosaukums}}</h1>
+          {{this.backendData.selectedProduct4Print.Suga}}  {{this.backendData.selectedProduct4Print.Potcelms}}
+          {{this.backendData.selectedProduct4Print.LatinNosaukums}}
+          <h3 >{{this.backendData.selectedProduct4Print.Zona}} {{this.backendData.selectedProduct4Print.Kods1}}</h3>
+          <ion-badge *ngIf=" this.backendData.selectedProduct4Print.PasesKrasa == 'dzeltena'" color="warning">{{this.backendData.selectedProduct4Print.PasesKrasa}}</ion-badge>
+          <ion-badge *ngIf=" this.backendData.selectedProduct4Print.PasesKrasa != 'dzeltena'" color="Unread">{{this.backendData.selectedProduct4Print.PasesKrasa}}</ion-badge>
+
+        </ion-col>
+        <ion-col size="12" size-sm="6">
+
+
+
+          <ion-button  expand="full"  color="secondary" fill="solid" (click)="change_product()">Mainīt</ion-button>
+        </ion-col>
+        </ion-row>
+        </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="6">
+
+      <ion-item>
+          <ion-label floating>Skaits</ion-label>
+          <ion-input type="text" [(ngModel)]="this.backendData.printCount"></ion-input>
+      </ion-item>
+      <ion-buttons >
+         <ion-button fill="solid" size="large" color="secondary" *ngFor="let x of backendData.PrintCountSuggestions" (click)="set_print_count(x)">  {{x}}  </ion-button>
+       </ion-buttons>
+    </ion-col>
+    <ion-col size="12" size-sm="6">
+      <ion-button expand="full" size="large" icon-left (click)="doPrint()"><ion-icon name='print'></ion-icon>Drukāt</ion-button>
+    </ion-col>
+   </ion-row>
+
+</ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="4">
+        <ion-button color="light"  icon-left (click)="scrollUp(1)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augšu</ion-button>
+      </ion-col>
+      <ion-col size="12" size-sm="4">
+        <ion-button color="medium" icon-left (click)="scrollUp(10)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augšu 10x</ion-button>
+      </ion-col>
+      <ion-col size="12" size-sm="4">
+        <ion-button color="dark" icon-left (click)="scrollUp(50)"><ion-icon name='arrow-up' ></ion-icon>Papīrs uz augšu 50x</ion-button>
+      </ion-col>
+     </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-sm="4">
+          <ion-button color="light"  icon-left (click)="scrollDown(1)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju</ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="4">
+          <ion-button color="medium"  icon-left (click)="scrollDown(10)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju 10x</ion-button>
+        </ion-col>
+        <ion-col size="12" size-sm="4">
+          <ion-button color="dark"  icon-left (click)="scrollDown(50)"><ion-icon name='arrow-down'></ion-icon>Papīrs uz leju 50x</ion-button>
+        </ion-col>
+     </ion-row>
+</ion-grid>
+
+
+
+
+
+
+  <ion-item>
+    <ion-label>Drukāšanas rinda ieslēgt/izslēgt -></ion-label>
+    <ion-toggle (click)="switch_queue_status()" [(ngModel)]="this.backendData.print_queue_status" ></ion-toggle>
+  </ion-item>
+
+  <ion-item-group>
+    <ion-item-divider color="light">Šodien</ion-item-divider>
+    <ion-item *ngFor="let item of this.backendData.queueToday" >
+      {{item.title}} ( {{item.printed_count}}/{{item.count}})
+        <ion-button *ngIf=" item.status == 'Gaida' || item.status == 'Drukā' " ion-button slot="end" color="danger" icon-left (click)="cancelPrint(item.id)"><ion-icon name='close'></ion-icon>Atcelt</ion-button>
+        <ion-note slot="end" color="{{item.color}}" >  {{item.status}}</ion-note>
+    </ion-item>
+
+  </ion-item-group>
+
+  <ion-item-group>
+    <ion-item-divider color="light">Agrāk</ion-item-divider>
+    <ion-item *ngFor="let item of this.backendData.queueOld" >
+      {{item.title}} ({{item.printed_count}}/{{item.count}})
+      <ion-note slot="end" color="{{item.color}}" >{{item.status}}</ion-note>
+    </ion-item>
+
+  </ion-item-group>
+
+
+
+
+
+
+
+
+
+
+
+</ion-content>

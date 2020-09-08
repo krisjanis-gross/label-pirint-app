@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-button   fill="solid"  [routerLink]="['/list']" >Back</ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+<ion-card>
+  <ion-card-content>
+     <ion-list>
+       <ion-item>
+         <ion-label position="floating">Nosaukums</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.Nosaukums" ></ion-input>
+       </ion-item>
+       <ion-item>
+         <ion-label position="floating">Suga</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.Suga" ></ion-input>
+         <ion-buttons >
+            <ion-button fill="solid" color="secondary" *ngFor="let x of backendData.SugaSuggestions" (click)="set_suga(x)">{{x}}</ion-button>
+          </ion-buttons>
+       </ion-item>
+       <ion-item>
+         <ion-label position="floating">Potcelms</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.Potcelms" ></ion-input>
+         <ion-buttons >
+            <ion-button fill="solid" color="secondary" *ngFor="let x of backendData.Potcelmssuggestions" (click)="set_potcelms(x)">{{x}}</ion-button>
+        </ion-buttons>
+       </ion-item>
+       <ion-item>
+         <ion-label position="floating">LatinNosaukums</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.LatinNosaukums" ></ion-input>
+         <ion-buttons >
+            <ion-button fill="solid" color="secondary" *ngFor="let x of backendData.LatinNosaukumssuggestions" (click)="set_LatinNosaukums(x)">{{x}}</ion-button>
+        </ion-buttons>
+       </ion-item>
+       <ion-item>
+         <ion-label position="floating">Zona</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.Zona" ></ion-input>
+         <ion-buttons >
+            <ion-button fill="solid" color="secondary" *ngFor="let x of backendData.Zonasuggestions" (click)="set_Zona(x)">{{x}}</ion-button>
+        </ion-buttons>
+       </ion-item>
+       <ion-item>
+         <ion-label position="floating">Kods1</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.Kods1" ></ion-input>,
+         <ion-buttons >
+            <ion-button fill="solid" color="secondary" *ngFor="let x of backendData.Kods1suggestions" (click)="set_Kods1(x)">{{x}}</ion-button>
+        </ion-buttons>
+       </ion-item>
+       <ion-item>
+         <ion-label position="floating">PasesKrasa</ion-label>
+         <ion-input type="text" [(ngModel)]="backendData.selectedProduct.PasesKrasa" ></ion-input>
+         <ion-buttons >
+            <ion-button fill="solid" color="secondary" *ngFor="let x of backendData.PasesKrasasuggestions" (click)="set_PasesKrasa(x)">{{x}}</ion-button>
+        </ion-buttons>
+       </ion-item>
+     </ion-list>
+
+     <section class="full-width">
+       <ion-button expand="full"  fill="solid" (click)="saveProduct()">Save</ion-button>
+     </section>
+
+ </ion-card-content>
+
+</ion-card>
+
+
+</ion-content>

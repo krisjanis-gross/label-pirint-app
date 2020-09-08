@@ -88,3 +88,15 @@ sudo which reboot
 sudo gedit /etc/sudoers and add line
 www-data ALL=(ALL) NOPASSWD: /sbin/reboot
 www-data ALL=(ALL) NOPASSWD: /sbin/shutdown
+
+
+6. add www-data user to lp group so that it can send binary to printer
+// https://ubuntuforums.org/archive/index.php/t-891909.html
+// add user pi to lp group    sudo adduser pi lp    sudo adduser www-data lp    then log out and log in(or reboot).
+
+7. Set up "shutdown" button on Raspberry pin
+https://howchoo.com/g/mwnlytk3zmm/how-to-add-a-power-button-to-your-raspberry-pi
+https://github.com/Howchoo/pi-power-button
+
+git clone https://github.com/Howchoo/pi-power-button.git
+./pi-power-button/script/install

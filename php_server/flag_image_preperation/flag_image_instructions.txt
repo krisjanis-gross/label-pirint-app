@@ -1,0 +1,16 @@
+1. Create flag .png. example flag_black_on_white50x34.png
+2. Create flag.pdf that contains flag image unsing fpdf class.
+      open 01_flag_pngtoPDF.php in editor
+      modify postition parameters.
+      run the file via browser.
+
+3. Install printer. Create custom paper size- W 9 cm H 2.5 cm
+   Open the PDF file with PDFXVwer ()
+   Print pdf to file -> .prn file
+
+4. remove 4 bytes from .prn file. This will remove page scroll
+   use trim_file.php
+
+5. test printing of .prn file
+
+6. leave the flag.prn file in this folder. it will be used by printing script

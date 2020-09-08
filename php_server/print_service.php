@@ -16,11 +16,11 @@ error_reporting(E_ALL);
 //https://stackoverflow.com/questions/2036654/run-php-script-as-daemon-process
 
 
-require_once(__DIR__ . "//print_worker.php");
-require_once(__DIR__ . "//print_app_functions.php");
+require_once(__DIR__ . "//functions_printer.php");
+require_once(__DIR__ . "//functions_print_app.php");
 
 // parameters
-$db_file = "print_app.db";
+$db_file = "print_appv2.db";
 
 
 if (isset($_GET['start_queue']))
@@ -74,14 +74,14 @@ function send_label_to_printing ($print_job) {
    //print "<br> printing teh label<br> ";
 
    $label_data = $print_job["print_object_json"];
-
+   $label_color = $print_job["label_color"];
    //var_dump($label_data);
 
     $left_margin =  get_config_parameter ('lmargin');
     $gap_after_label =  get_config_parameter ('gap_after_label');
 
    //print "<br> left margin: $left_margin  <br> gap_after_label: $gap_after_label  <br>";
-   print_label( $label_data,$left_margin, $gap_after_label ) ;
+   print_label( $label_data,$left_margin, $gap_after_label , $label_color) ;
 
 }
 

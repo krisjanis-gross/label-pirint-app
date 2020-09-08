@@ -1,6 +1,5 @@
 {
   "name": "ionic_gui_app",
-  "app_id": "",
   "integrations": {
     "cordova": {}
   },

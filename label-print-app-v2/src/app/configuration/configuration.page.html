@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Uzstādījumi {{ backendData.ServerURL}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+<ion-card>
+    <ion-card-content>
+          <ion-item>
+            <ion-label position="floating">Server URL</ion-label>
+            <ion-input type="text" [(ngModel)]="this.backendData.ServerURL"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-button   (click)="saveServerURL()" >Saglabāt</ion-button>
+          </ion-item>
+    </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-header>
+    Rīki
+  </ion-card-header>
+    <ion-card-content>
+    <ion-button (click)="reboot_server()" >Restart</ion-button>
+    <ion-button (click)="shutdown_server()" >Shutdown</ion-button>
+    <ion-button >(todo) Import data</ion-button>
+    <ion-button >(todo) Export data</ion-button>
+  </ion-card-content>
+</ion-card>
+
+
+<ion-card>
+  <ion-card-header>
+    Drukāšanas parametri
+  </ion-card-header>
+  <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Gads/partija</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.GadsPartija" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Rinda 1</ion-label>
+          <ion-input type="text" [(ngModel)]="this.backendData.configData.Line1"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Rinda 2</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.Line2"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Rinda 3</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.Line3"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Rinda 4</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.Line4"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Kreisā atkāpe</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.lmargin"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Atstarpe starp izdrukām (Advances the vertical print position n/216 inch  = n/0,334 mm)</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.gap_after_label"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Scroll parametrs (n/216 inch = n/0,334 mm)</ion-label>
+          <ion-input type="text" [(ngModel)]="backendData.configData.scroll_parameter"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <ion-button   (click)="saveSettings()" >Saglabāt</ion-button>
+
+</ion-card-content>
+</ion-card>
+
+
+
+
+<ion-card>
+  <ion-card-content>
+      todo: font size
+  </ion-card-content>
+</ion-card>
+
+</ion-content>
