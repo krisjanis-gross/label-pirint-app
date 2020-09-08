@@ -460,8 +460,8 @@ $print_object  =  str_replace ( "{{Potcelms}}" , $Potcelms , $print_object  );
 $print_object  =  str_replace ( "{{Zona}}" , $Zona , $print_object  );
 $print_object  =  str_replace ( "{{Kods1}}" , $Kods1 , $print_object  );
 $print_object  =  str_replace ( "{{Suga}}" , $Suga , $print_object  );
-$print_object  =  str_replace ( "{{GadsPartija}} " , $GadsPartija , $print_object  );
-$print_object  =  str_replace ( "{{id}} " , $id , $print_object  );
+$print_object  =  str_replace ( "{{GadsPartija}}" , $GadsPartija , $print_object  );
+$print_object  =  str_replace ( "{{id}}" , $id , $print_object  );
 
 
 // save in queue
