@@ -129,6 +129,13 @@ exec ( "cat flag_image_preperation/flag.prn > /dev/usb/lp0" ) ;
           $printer -> text("\n");
 
 
+            $step = 5;
+            $command = "J";
+            $my_command = Printer::ESC . $command . chr($step);
+            $printer->getPrintConnector()->write($my_command);
+            
+            
+            
           if ($label_color != 'dzeltena')  // balta etiķete. -> 2. rinda ir ar underline
                 $printer -> setUnderline(1);
           $printer -> textRaw( $line2_encoded );
@@ -136,6 +143,12 @@ exec ( "cat flag_image_preperation/flag.prn > /dev/usb/lp0" ) ;
           if ($label_color != 'dzeltena')  // balta etiķete. -> 2. rinda ir ar underline
                 $printer -> setUnderline(0);
 
+          if ($label_color != 'dzeltena') { //  balta etikete -> papildus atstarpe peec 2. rindas
+            $step = 15;
+            $command = "J";
+            $my_command = Printer::ESC . $command . chr($step);
+            $printer->getPrintConnector()->write($my_command);
+          }
 
           if ($label_color == 'dzeltena')  // dzeltena etiķete. -> 3. rinda ir ar underline
                     $printer -> setUnderline(1);
