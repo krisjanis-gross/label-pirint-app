@@ -23,14 +23,31 @@ function scroll_paper( $direction, $step = 10) {
     else
       $command = "j";
 
-//error_log("//////////////////////////////// scroll paper");
+//error_log("//////////////////////////////// scroll paper direction = $direction  step = $step");
 
     $connector = new CupsPrintConnector("EPSON_LX-350");
-    //$profile = DefaultCapabilityProfile::getInstance();
     $printer = new Printer($connector);
 
-    $my_command = Printer::ESC . $command . chr($step);
-    $printer->getPrintConnector()->write($my_command);
+
+    if ($step != 4750) {
+      $my_command = Printer::ESC . $command . chr($step);
+      $printer->getPrintConnector()->write($my_command);
+    //  error_log("//////////////////////////////// scroll paper direction = $direction  step = $step");
+    }
+    else // maximum scroll button. we call scroll command multiple times
+    {
+      $step = 95 ;  // 475 / 5
+      $my_command = Printer::ESC . $command . chr($step);
+      $printer->getPrintConnector()->write($my_command);
+      $printer->getPrintConnector()->write($my_command);
+      $printer->getPrintConnector()->write($my_command);
+      $printer->getPrintConnector()->write($my_command);
+      $printer->getPrintConnector()->write($my_command);
+    //error_log("//////////////////////////////// scroll paper direction = $direction  step = $step");
+
+    }
+
+
     $printer -> close();
 }
 
@@ -87,6 +104,7 @@ exec ( "cat flag_image_preperation/flag.prn > /dev/usb/lp0" ) ;
           $my_command = Printer::ESC . "g";  // set small font
           $printer->getPrintConnector()->write($my_command);
 
+
           // set left margin
           $my_command = Printer::ESC . "l" . chr($left_margin);
           $printer->getPrintConnector()->write($my_command);
@@ -128,14 +146,12 @@ exec ( "cat flag_image_preperation/flag.prn > /dev/usb/lp0" ) ;
           $printer -> textRaw( $line1_encoded );
           $printer -> text("\n");
 
+          $step = 5;
+          $command = "J";
+          $my_command = Printer::ESC . $command . chr($step);
+          $printer->getPrintConnector()->write($my_command);
 
-            $step = 5;
-            $command = "J";
-            $my_command = Printer::ESC . $command . chr($step);
-            $printer->getPrintConnector()->write($my_command);
-            
-            
-            
+
           if ($label_color != 'dzeltena')  // balta etiķete. -> 2. rinda ir ar underline
                 $printer -> setUnderline(1);
           $printer -> textRaw( $line2_encoded );
@@ -143,12 +159,14 @@ exec ( "cat flag_image_preperation/flag.prn > /dev/usb/lp0" ) ;
           if ($label_color != 'dzeltena')  // balta etiķete. -> 2. rinda ir ar underline
                 $printer -> setUnderline(0);
 
-          if ($label_color != 'dzeltena') { //  balta etikete -> papildus atstarpe peec 2. rindas
-            $step = 15;
-            $command = "J";
-            $my_command = Printer::ESC . $command . chr($step);
-            $printer->getPrintConnector()->write($my_command);
-          }
+          //if ($label_color != 'dzeltena') { //  balta etikete -> papildus atstarpe peec 2. rindas
+                 $step = 15;
+                 $command = "J";
+                 $my_command = Printer::ESC . $command . chr($step);
+                 $printer->getPrintConnector()->write($my_command);
+        //  }
+
+
 
           if ($label_color == 'dzeltena')  // dzeltena etiķete. -> 3. rinda ir ar underline
                     $printer -> setUnderline(1);
@@ -186,7 +204,7 @@ exec ( "cat flag_image_preperation/flag.prn > /dev/usb/lp0" ) ;
                 $printer -> textRaw( $line4_encoded );
                 $printer -> text("\n");
 
-
+        //  if ($label_color == 'dzeltena') $gap_after_label = $gap_after_label + 15;
           $my_command = Printer::ESC . "J" . chr($gap_after_label); // scroll paper
           $printer->getPrintConnector()->write($my_command);
               /* Close printer */
